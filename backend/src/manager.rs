@@ -28,12 +28,14 @@ impl DuplicateOutput {
 
 pub struct Manager {
   duplicated_output: Vec<DuplicateOutput>,
+  timeout_ms: u32,
 }
 
 impl Manager {
-  pub fn new() -> Result<Manager, &'static str> {
+  pub fn new(timeout_ms: u32) -> Result<Manager, &'static str> {
     let mut manager = Manager {
       duplicated_output: Vec::new(),
+      timeout_ms,
     };
     match manager.acquire_output_duplication() {
       Ok(_) => Ok(manager),
