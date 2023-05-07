@@ -7,7 +7,7 @@ use windows::Win32::Graphics::Dxgi::{
   CreateDXGIFactory1, IDXGIFactory1, IDXGIOutput1, IDXGIOutputDuplication,
 };
 
-struct DupContext {
+struct DuplicateOutput {
   device: Box<&'static ID3D11Device>,
   device_context: Box<&'static ID3D11DeviceContext>,
   output: IDXGIOutput1,
@@ -15,7 +15,7 @@ struct DupContext {
 }
 
 pub struct Manager {
-  duplicated_output: Vec<DupContext>,
+  duplicated_output: Vec<DuplicateOutput>,
 }
 
 impl Manager {
@@ -81,7 +81,7 @@ impl Manager {
         for output in outputs {
           let output = output.cast::<IDXGIOutput1>().unwrap();
           let output_duplication = output.DuplicateOutput(device).unwrap();
-          self.duplicated_output.push(DupContext {
+          self.duplicated_output.push(DuplicateOutput {
             device: Box::new(device),
             device_context: Box::new(device_context),
             output,
