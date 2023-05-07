@@ -1,30 +1,13 @@
-use std::ptr;
-
 use windows::core::ComInterface;
 use windows::Win32::Graphics::Direct3D::{D3D_DRIVER_TYPE_UNKNOWN, D3D_FEATURE_LEVEL_9_1};
 use windows::Win32::Graphics::Direct3D11::{
-  D3D11CreateDevice, ID3D11Device, ID3D11DeviceContext, D3D11_CREATE_DEVICE_FLAG, D3D11_SDK_VERSION,
+  D3D11CreateDevice, D3D11_CREATE_DEVICE_FLAG, D3D11_SDK_VERSION,
 };
-use windows::Win32::Graphics::Dxgi::{
-  CreateDXGIFactory1, IDXGIFactory1, IDXGIOutput1, IDXGIOutputDuplication, DXGI_OUTPUT_DESC,
-};
+use windows::Win32::Graphics::Dxgi::{CreateDXGIFactory1, IDXGIFactory1, IDXGIOutput1};
 
-struct DuplicateOutput {
-  device: Box<&'static ID3D11Device>,
-  device_context: Box<&'static ID3D11DeviceContext>,
-  output: IDXGIOutput1,
-  output_duplication: IDXGIOutputDuplication,
-}
+use self::duplicate_output::DuplicateOutput;
 
-impl DuplicateOutput {
-  pub fn get_desc(&self) -> Box<DXGI_OUTPUT_DESC> {
-    unsafe {
-      let desc = ptr::null_mut();
-      self.output.GetDesc(desc).unwrap();
-      Box::from_raw(desc)
-    }
-  }
-}
+mod duplicate_output;
 
 pub struct Manager {
   duplicated_output: Vec<DuplicateOutput>,
