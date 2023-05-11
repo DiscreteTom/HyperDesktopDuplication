@@ -42,8 +42,8 @@ impl DuplicateContext {
 
   pub fn get_desc(&self) -> DXGI_OUTPUT_DESC {
     unsafe {
-      let desc = DXGI_OUTPUT_DESC::default();
-      self.output.GetDesc(&desc as *const _ as *mut _).unwrap();
+      let mut desc = DXGI_OUTPUT_DESC::default();
+      self.output.GetDesc(&mut desc).unwrap();
       desc
     }
   }
@@ -56,7 +56,7 @@ impl DuplicateContext {
         .output_duplication
         .AcquireNextFrame(
           self.timeout_ms,
-          &mut frame_info as *mut _,
+          &mut frame_info,
           &mut resource as *const _ as *mut _,
         )
         .unwrap();
@@ -79,14 +79,10 @@ impl DuplicateContext {
       texture_desc.SampleDesc.Quality = 0;
 
       // copy a readable version of the texture in GPU
-      let readable_texture: Option<ID3D11Texture2D> = None.clone();
+      let mut readable_texture: Option<ID3D11Texture2D> = None.clone();
       self
         .device
-        .CreateTexture2D(
-          &texture_desc,
-          None,
-          Some(&readable_texture as *const _ as *mut _),
-        )
+        .CreateTexture2D(&texture_desc, None, Some(&mut readable_texture))
         .unwrap();
       let readable_texture = readable_texture.unwrap();
       // Lower priorities causes stuff to be needlessly copied from gpu to ram,

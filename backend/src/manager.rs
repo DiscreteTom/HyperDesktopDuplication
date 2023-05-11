@@ -69,9 +69,9 @@ impl Manager {
           D3D11_CREATE_DEVICE_FLAG(0),
           None,
           D3D11_SDK_VERSION,
-          Some(&mut device as *mut _),
+          Some(&mut device),
           Some(&mut feature_level),
-          Some(&mut device_context as *mut _),
+          Some(&mut device_context),
         )
         .unwrap();
         let device = device.unwrap();
