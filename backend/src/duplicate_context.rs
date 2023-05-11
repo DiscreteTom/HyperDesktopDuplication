@@ -8,7 +8,7 @@ use windows::{
       D3D11_CPU_ACCESS_READ, D3D11_RESOURCE_MISC_FLAG, D3D11_USAGE_STAGING,
     },
     Dxgi::{
-      IDXGIOutput1, IDXGIOutputDuplication, IDXGISurface1, DXGI_OUTPUT_DESC,
+      IDXGIOutput1, IDXGIOutputDuplication, IDXGISurface1, DXGI_MAP_READ, DXGI_OUTPUT_DESC,
       DXGI_RESOURCE_PRIORITY_MAXIMUM,
     },
   },
@@ -67,7 +67,7 @@ impl DuplicateContext {
       (*texture_desc).MiscFlags = D3D11_RESOURCE_MISC_FLAG(0);
       (*texture_desc).Usage = D3D11_USAGE_STAGING; // A resource that supports data transfer (copy) from the GPU to the CPU.
 
-      // copy from GPU to RAM
+      // copy a readable version of the texture in GPU
       let readable_texture = ptr::null_mut();
       self
         .device
@@ -85,6 +85,19 @@ impl DuplicateContext {
       self.output_duplication.ReleaseFrame().unwrap();
 
       readable_surface.cast().unwrap()
+    }
+  }
+
+  pub fn capture_frame(&mut self, dest: *mut u8, size: usize) {
+    unsafe {
+      let frame = &self.acquire_next_frame();
+      let mapped_surface = ptr::null_mut();
+      frame.Map(mapped_surface, DXGI_MAP_READ).unwrap();
+      let mapped_surface = Box::from_raw(mapped_surface);
+
+      ptr::copy_nonoverlapping(mapped_surface.pBits, dest, size);
+
+      frame.Unmap().unwrap();
     }
   }
 }
