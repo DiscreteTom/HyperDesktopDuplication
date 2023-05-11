@@ -30,6 +30,8 @@ impl Manager {
   }
 
   pub fn refresh(&mut self) -> Result<(), ()> {
+    self.dup_ctx.clear();
+
     unsafe {
       let factory = CreateDXGIFactory1::<IDXGIFactory1>().unwrap();
       let mut adapter_outputs = Vec::new();
