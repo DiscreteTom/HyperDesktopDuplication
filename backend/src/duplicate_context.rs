@@ -39,11 +39,11 @@ impl DuplicateContext {
     }
   }
 
-  pub fn get_desc(&self) -> Box<DXGI_OUTPUT_DESC> {
+  pub fn get_desc(&self) -> DXGI_OUTPUT_DESC {
     unsafe {
-      let desc = ptr::null_mut();
-      self.output.GetDesc(desc).unwrap();
-      Box::from_raw(desc)
+      let desc = DXGI_OUTPUT_DESC::default();
+      self.output.GetDesc(&desc as *const _ as *mut _).unwrap();
+      desc
     }
   }
 
