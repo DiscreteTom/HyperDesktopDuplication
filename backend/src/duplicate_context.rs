@@ -88,7 +88,7 @@ impl DuplicateContext {
     }
   }
 
-  pub fn capture_frame(&mut self, dest: *mut u8, size: usize) {
+  pub fn capture_frame(&self, dest: *mut u8, size: usize) {
     unsafe {
       let frame = &self.acquire_next_frame();
       let mapped_surface = ptr::null_mut();
