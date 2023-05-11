@@ -7,7 +7,7 @@ use windows::Win32::Graphics::Direct3D11::{
 use windows::Win32::Graphics::Dxgi::{CreateDXGIFactory1, IDXGIFactory1, IDXGIOutput1};
 
 pub struct Manager {
-  dup_ctxs: Vec<DuplicateContext>,
+  pub dup_ctxs: Vec<DuplicateContext>,
   timeout_ms: u32,
 }
 
