@@ -57,8 +57,8 @@ impl Manager {
 
       // prepare device and output
       for (adapter, outputs) in adapter_outputs {
-        let device: Option<ID3D11Device> = None.clone();
-        let device_context: Option<ID3D11DeviceContext> = None.clone();
+        let mut device: Option<ID3D11Device> = None.clone();
+        let mut device_context: Option<ID3D11DeviceContext> = None.clone();
         let mut feature_level = D3D_FEATURE_LEVEL_9_1;
 
         // create device for each adapter
@@ -69,9 +69,9 @@ impl Manager {
           D3D11_CREATE_DEVICE_FLAG(0),
           None,
           D3D11_SDK_VERSION,
-          Some(&device as *const _ as *mut _),
+          Some(&mut device as *mut _),
           Some(&mut feature_level),
-          Some(&device_context as *const _ as *mut _),
+          Some(&mut device_context as *mut _),
         )
         .unwrap();
         let device = device.unwrap();
