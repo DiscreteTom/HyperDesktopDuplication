@@ -23,13 +23,13 @@ impl Manager {
       duplicated_output: Vec::new(),
       timeout_ms,
     };
-    match manager.acquire_output_duplication() {
+    match manager.refresh() {
       Ok(_) => Ok(manager),
       Err(_) => Err("Failed to acquire output duplication"),
     }
   }
 
-  fn acquire_output_duplication(&mut self) -> Result<(), ()> {
+  pub fn refresh(&mut self) -> Result<(), ()> {
     unsafe {
       let factory = CreateDXGIFactory1::<IDXGIFactory1>().unwrap();
       let mut adapter_outputs = Vec::new();
