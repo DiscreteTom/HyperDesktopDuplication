@@ -67,9 +67,9 @@ impl DuplicateContext {
       // Configure the description to make the texture readable
       let mut texture_desc = D3D11_TEXTURE2D_DESC::default();
       (*texture).GetDesc(&mut texture_desc as *mut _);
-      texture_desc.BindFlags = D3D11_BIND_FLAG(0);
+      texture_desc.BindFlags = D3D11_BIND_FLAG::default();
       texture_desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
-      texture_desc.MiscFlags = D3D11_RESOURCE_MISC_FLAG(0);
+      texture_desc.MiscFlags = D3D11_RESOURCE_MISC_FLAG::default();
       texture_desc.Usage = D3D11_USAGE_STAGING; // A resource that supports data transfer (copy) from the GPU to the CPU.
 
       // copy a readable version of the texture in GPU
