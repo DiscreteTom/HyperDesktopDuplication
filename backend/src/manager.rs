@@ -1,6 +1,4 @@
-mod duplicate_context;
-
-use self::duplicate_context::DuplicateContext;
+use crate::duplicate_context::DuplicateContext;
 use windows::core::ComInterface;
 use windows::Win32::Graphics::Direct3D::{D3D_DRIVER_TYPE_UNKNOWN, D3D_FEATURE_LEVEL_9_1};
 use windows::Win32::Graphics::Direct3D11::{
