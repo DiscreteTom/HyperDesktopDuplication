@@ -15,6 +15,10 @@ pub struct Manager {
 }
 
 impl Manager {
+  pub fn default() -> Result<Manager, &'static str> {
+    Manager::new(300)
+  }
+
   pub fn new(timeout_ms: u32) -> Result<Manager, &'static str> {
     let mut manager = Manager {
       duplicated_output: Vec::new(),
