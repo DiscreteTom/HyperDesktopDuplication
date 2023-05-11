@@ -55,7 +55,7 @@ impl DuplicateContext {
         .output_duplication
         .AcquireNextFrame(self.timeout_ms, frame_info, resource)
         .unwrap();
-      let frame_info = Box::from_raw(frame_info);
+      // let frame_info = Box::from_raw(frame_info);
       let texture = Box::from_raw(resource.cast::<Option<ID3D11Texture2D>>()).unwrap();
       let mut texture_desc = ptr::null_mut();
       texture.GetDesc(texture_desc);
@@ -80,7 +80,7 @@ impl DuplicateContext {
       self
         .device_context
         .CopyResource(&readable_surface, &texture);
-      self.output_duplication.ReleaseFrame();
+      self.output_duplication.ReleaseFrame().unwrap();
 
       readable_surface.cast().unwrap()
     }
