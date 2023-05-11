@@ -6,10 +6,11 @@ use windows::Win32::Graphics::{
 };
 
 pub struct DuplicateOutput {
-  device: Box<&'static ID3D11Device>,
-  device_context: Box<&'static ID3D11DeviceContext>,
-  output: IDXGIOutput1,
-  output_duplication: IDXGIOutputDuplication,
+  pub device: ID3D11Device,
+  pub device_context: ID3D11DeviceContext,
+  pub timeout_ms: u32,
+  pub output: IDXGIOutput1,
+  pub output_duplication: IDXGIOutputDuplication,
 }
 
 impl DuplicateOutput {

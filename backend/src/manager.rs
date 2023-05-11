@@ -74,17 +74,18 @@ impl Manager {
           device_context,
         )
         .unwrap();
-        let device = (*device.unwrap()).as_ref().unwrap();
-        let device_context = (*device_context.unwrap()).as_ref().unwrap();
+        let device = Box::from_raw(device.unwrap()).unwrap();
+        let device_context = Box::from_raw(device_context.unwrap()).unwrap();
 
         // create duplication output for each output
         for output in outputs {
           let output = output.cast::<IDXGIOutput1>().unwrap();
-          let output_duplication = output.DuplicateOutput(device).unwrap();
+          let output_duplication = output.DuplicateOutput(&device).unwrap();
           self.duplicated_output.push(DuplicateOutput {
-            device: Box::new(device),
-            device_context: Box::new(device_context),
+            device: device.clone(),
+            device_context: device_context.clone(),
             output,
+            timeout_ms: self.timeout_ms,
             output_duplication,
           })
         }
