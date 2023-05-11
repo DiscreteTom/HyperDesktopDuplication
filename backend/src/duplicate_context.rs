@@ -15,14 +15,30 @@ use windows::{
 };
 
 pub struct DuplicateContext {
-  pub device: ID3D11Device,
-  pub device_context: ID3D11DeviceContext,
-  pub timeout_ms: u32,
-  pub output: IDXGIOutput1,
-  pub output_duplication: IDXGIOutputDuplication,
+  device: ID3D11Device,
+  device_context: ID3D11DeviceContext,
+  timeout_ms: u32,
+  output: IDXGIOutput1,
+  output_duplication: IDXGIOutputDuplication,
 }
 
 impl DuplicateContext {
+  pub fn new(
+    device: ID3D11Device,
+    device_context: ID3D11DeviceContext,
+    output: IDXGIOutput1,
+    output_duplication: IDXGIOutputDuplication,
+    timeout_ms: u32,
+  ) -> Self {
+    Self {
+      device,
+      device_context,
+      timeout_ms,
+      output,
+      output_duplication,
+    }
+  }
+
   pub fn get_desc(&self) -> Box<DXGI_OUTPUT_DESC> {
     unsafe {
       let desc = ptr::null_mut();

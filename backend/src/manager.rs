@@ -81,13 +81,13 @@ impl Manager {
         for output in outputs {
           let output = output.cast::<IDXGIOutput1>().unwrap();
           let output_duplication = output.DuplicateOutput(&device).unwrap();
-          self.dup_ctxs.push(DuplicateContext {
-            device: device.clone(),
-            device_context: device_context.clone(),
+          self.dup_ctxs.push(DuplicateContext::new(
+            device.clone(),
+            device_context.clone(),
             output,
-            timeout_ms: self.timeout_ms,
             output_duplication,
-          })
+            self.timeout_ms,
+          ))
         }
       }
       Ok(())
