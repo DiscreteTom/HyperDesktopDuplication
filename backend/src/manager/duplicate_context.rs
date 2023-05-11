@@ -1,8 +1,17 @@
 use std::ptr;
 
-use windows::Win32::Graphics::{
-  Direct3D11::{ID3D11Device, ID3D11DeviceContext, ID3D11Texture2D},
-  Dxgi::{IDXGIOutput1, IDXGIOutputDuplication, DXGI_OUTPUT_DESC},
+use windows::{
+  core::ComInterface,
+  Win32::Graphics::{
+    Direct3D11::{
+      ID3D11Device, ID3D11DeviceContext, ID3D11Resource, ID3D11Texture2D, D3D11_BIND_FLAG,
+      D3D11_CPU_ACCESS_READ, D3D11_RESOURCE_MISC_FLAG, D3D11_USAGE_STAGING,
+    },
+    Dxgi::{
+      IDXGIOutput1, IDXGIOutputDuplication, IDXGISurface1, DXGI_OUTPUT_DESC,
+      DXGI_RESOURCE_PRIORITY_MAXIMUM,
+    },
+  },
 };
 
 pub struct DuplicateContext {
@@ -22,17 +31,42 @@ impl DuplicateContext {
     }
   }
 
-  // pub fn acquire_next_frame(&self, timeout_ms: u32) {
-  //   unsafe {
-  //     let mut resource = ptr::null_mut();
-  //     let mut frame_info = ptr::null_mut();
-  //     self
-  //       .output_duplication
-  //       .AcquireNextFrame(timeout_ms, frame_info, resource)
-  //       .unwrap();
-  //     let resource = *resource;
-  //     let frame_info = Box::from_raw(frame_info);
-  //     let texture = resource.cast::<ID3D11Texture2D>().unwrap();
-  //   }
-  // }
+  pub fn acquire_next_frame(&self) -> IDXGISurface1 {
+    unsafe {
+      let resource = ptr::null_mut();
+      let frame_info = ptr::null_mut();
+      self
+        .output_duplication
+        .AcquireNextFrame(self.timeout_ms, frame_info, resource)
+        .unwrap();
+      let frame_info = Box::from_raw(frame_info);
+      let texture = Box::from_raw(resource.cast::<Option<ID3D11Texture2D>>()).unwrap();
+      let mut texture_desc = ptr::null_mut();
+      texture.GetDesc(texture_desc);
+
+      // Configure the description to make the texture readable
+      (*texture_desc).BindFlags = D3D11_BIND_FLAG(0);
+      (*texture_desc).CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+      (*texture_desc).MiscFlags = D3D11_RESOURCE_MISC_FLAG(0);
+      (*texture_desc).Usage = D3D11_USAGE_STAGING;
+
+      let readable_texture = ptr::null_mut();
+      self
+        .device
+        .CreateTexture2D(texture_desc, None, Some(readable_texture))
+        .unwrap();
+      let readable_texture = Box::from_raw(readable_texture).unwrap();
+      // Lower priorities causes stuff to be needlessly copied from gpu to ram,
+      // causing huge ram usage on some systems.
+      // https://github.com/bryal/dxgcap-rs/blob/208d93368bc64aed783791242410459c878a10fb/src/lib.rs#L225
+      readable_texture.SetEvictionPriority(DXGI_RESOURCE_PRIORITY_MAXIMUM.0);
+      let readable_surface = readable_texture.cast::<ID3D11Resource>().unwrap();
+      self
+        .device_context
+        .CopyResource(&readable_surface, &texture);
+      self.output_duplication.ReleaseFrame();
+
+      readable_surface.cast().unwrap()
+    }
+  }
 }
