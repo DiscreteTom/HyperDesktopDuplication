@@ -2,7 +2,7 @@ use crate::duplicate_context::DuplicateContext;
 use windows::core::ComInterface;
 use windows::Win32::Graphics::Direct3D::{D3D_DRIVER_TYPE_UNKNOWN, D3D_FEATURE_LEVEL_9_1};
 use windows::Win32::Graphics::Direct3D11::{
-  D3D11CreateDevice, D3D11_CREATE_DEVICE_FLAG, D3D11_SDK_VERSION,
+  D3D11CreateDevice, ID3D11Device, ID3D11DeviceContext, D3D11_CREATE_DEVICE_FLAG, D3D11_SDK_VERSION,
 };
 use windows::Win32::Graphics::Dxgi::{CreateDXGIFactory1, IDXGIFactory1, IDXGIOutput1};
 
@@ -57,8 +57,8 @@ impl Manager {
 
       // prepare device and output
       for (adapter, outputs) in adapter_outputs {
-        let device = None;
-        let device_context = None;
+        let device: Option<ID3D11Device> = None.clone();
+        let device_context: Option<ID3D11DeviceContext> = None.clone();
         let mut feature_level = D3D_FEATURE_LEVEL_9_1;
 
         // create device for each adapter
@@ -69,13 +69,13 @@ impl Manager {
           D3D11_CREATE_DEVICE_FLAG(0),
           None,
           D3D11_SDK_VERSION,
-          device,
+          Some(&device as *const _ as *mut _),
           Some(&mut feature_level),
-          device_context,
+          Some(&device_context as *const _ as *mut _),
         )
         .unwrap();
-        let device = Box::from_raw(device.unwrap()).unwrap();
-        let device_context = Box::from_raw(device_context.unwrap()).unwrap();
+        let device = device.unwrap();
+        let device_context = device_context.unwrap();
 
         // create duplication output for each output
         for output in outputs {
