@@ -1,13 +1,12 @@
+mod duplicate_output;
+
+use self::duplicate_output::DuplicateOutput;
 use windows::core::ComInterface;
 use windows::Win32::Graphics::Direct3D::{D3D_DRIVER_TYPE_UNKNOWN, D3D_FEATURE_LEVEL_9_1};
 use windows::Win32::Graphics::Direct3D11::{
   D3D11CreateDevice, D3D11_CREATE_DEVICE_FLAG, D3D11_SDK_VERSION,
 };
 use windows::Win32::Graphics::Dxgi::{CreateDXGIFactory1, IDXGIFactory1, IDXGIOutput1};
-
-use self::duplicate_output::DuplicateOutput;
-
-mod duplicate_output;
 
 pub struct Manager {
   duplicated_output: Vec<DuplicateOutput>,
