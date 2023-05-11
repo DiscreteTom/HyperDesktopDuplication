@@ -9,7 +9,8 @@ use windows::{
     },
     Dxgi::{
       Common::DXGI_FORMAT_B8G8R8A8_UNORM, IDXGIOutput1, IDXGIOutputDuplication, IDXGISurface1,
-      DXGI_MAP_READ, DXGI_OUTDUPL_FRAME_INFO, DXGI_OUTPUT_DESC, DXGI_RESOURCE_PRIORITY_MAXIMUM,
+      DXGI_MAPPED_RECT, DXGI_MAP_READ, DXGI_OUTDUPL_FRAME_INFO, DXGI_OUTPUT_DESC,
+      DXGI_RESOURCE_PRIORITY_MAXIMUM,
     },
   },
 };
@@ -105,9 +106,8 @@ impl DuplicateContext {
   pub fn capture_frame(&self, dest: *mut u8, width: u32, height: u32) {
     unsafe {
       let frame = &self.acquire_next_frame(width, height);
-      let mapped_surface = ptr::null_mut();
-      frame.Map(mapped_surface, DXGI_MAP_READ).unwrap();
-      let mapped_surface = Box::from_raw(mapped_surface);
+      let mut mapped_surface = DXGI_MAPPED_RECT::default();
+      frame.Map(&mut mapped_surface, DXGI_MAP_READ).unwrap();
 
       ptr::copy_nonoverlapping(mapped_surface.pBits, dest, (width * height * 4) as usize); // 4 for BGRA
 
