@@ -1,6 +1,6 @@
-mod duplicate_output;
+mod duplicate_context;
 
-use self::duplicate_output::DuplicateOutput;
+use self::duplicate_context::DuplicateContext;
 use windows::core::ComInterface;
 use windows::Win32::Graphics::Direct3D::{D3D_DRIVER_TYPE_UNKNOWN, D3D_FEATURE_LEVEL_9_1};
 use windows::Win32::Graphics::Direct3D11::{
@@ -9,7 +9,7 @@ use windows::Win32::Graphics::Direct3D11::{
 use windows::Win32::Graphics::Dxgi::{CreateDXGIFactory1, IDXGIFactory1, IDXGIOutput1};
 
 pub struct Manager {
-  duplicated_output: Vec<DuplicateOutput>,
+  dup_ctx: Vec<DuplicateContext>,
   timeout_ms: u32,
 }
 
@@ -20,7 +20,7 @@ impl Manager {
 
   pub fn new(timeout_ms: u32) -> Result<Manager, &'static str> {
     let mut manager = Manager {
-      duplicated_output: Vec::new(),
+      dup_ctx: Vec::new(),
       timeout_ms,
     };
     match manager.refresh() {
@@ -81,7 +81,7 @@ impl Manager {
         for output in outputs {
           let output = output.cast::<IDXGIOutput1>().unwrap();
           let output_duplication = output.DuplicateOutput(&device).unwrap();
-          self.duplicated_output.push(DuplicateOutput {
+          self.dup_ctx.push(DuplicateContext {
             device: device.clone(),
             device_context: device_context.clone(),
             output,
