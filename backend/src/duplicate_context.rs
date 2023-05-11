@@ -55,17 +55,19 @@ impl DuplicateContext {
         .output_duplication
         .AcquireNextFrame(self.timeout_ms, frame_info, resource)
         .unwrap();
+
       // let frame_info = Box::from_raw(frame_info);
       let texture = Box::from_raw(resource.cast::<Option<ID3D11Texture2D>>()).unwrap();
-      let mut texture_desc = ptr::null_mut();
-      texture.GetDesc(texture_desc);
 
       // Configure the description to make the texture readable
+      let mut texture_desc = ptr::null_mut();
+      texture.GetDesc(texture_desc);
       (*texture_desc).BindFlags = D3D11_BIND_FLAG(0);
       (*texture_desc).CPUAccessFlags = D3D11_CPU_ACCESS_READ;
       (*texture_desc).MiscFlags = D3D11_RESOURCE_MISC_FLAG(0);
       (*texture_desc).Usage = D3D11_USAGE_STAGING; // A resource that supports data transfer (copy) from the GPU to the CPU.
 
+      // copy from GPU to RAM
       let readable_texture = ptr::null_mut();
       self
         .device
