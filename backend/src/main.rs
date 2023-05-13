@@ -3,7 +3,7 @@ mod manager;
 mod model;
 mod route;
 
-use route::get_displays;
+use crate::route::all_routes;
 
 #[tokio::main]
 async fn main() {
@@ -11,7 +11,7 @@ async fn main() {
 
   println!("running on localhost:3030");
 
-  warp::serve(get_displays(manager))
+  warp::serve(all_routes(manager))
     .run(([127, 0, 0, 1], 3030))
     .await;
 }
