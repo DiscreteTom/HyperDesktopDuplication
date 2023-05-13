@@ -25,3 +25,14 @@ pub async fn handle_get_display(id: u32, manager: Manager) -> Result<impl warp::
   let desc = ctx.desc().unwrap();
   Ok(warp::reply::json(&(desc.to_info())))
 }
+
+pub async fn handle_create_capturer(
+  id: u32,
+  name: String,
+  manager: Manager,
+) -> Result<impl warp::Reply, Infallible> {
+  let manager = manager.lock().await;
+  let ctx = manager.contexts.get(id as usize).unwrap();
+  ctx.shared_capturer(&name).unwrap();
+  Ok("ok")
+}
