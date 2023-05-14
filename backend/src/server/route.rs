@@ -73,7 +73,7 @@ pub fn take_capture(
   sender: ActionSender,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
   warp::path!("captures" / u32)
-    .and(warp::get())
+    .and(warp::post())
     .and(with_mutex(mutex))
     .and(with_sender(sender))
     .and_then(handle_take_capturer)
