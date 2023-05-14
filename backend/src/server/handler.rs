@@ -37,3 +37,14 @@ pub async fn handle_create_capturer(
     .unwrap();
   Ok(rx.await.unwrap())
 }
+
+pub async fn handle_delete_capturer(
+  id: u32,
+  mutex: ServerMutex,
+  sender: ActionSender,
+) -> Result<impl warp::Reply, Infallible> {
+  let _ = mutex.lock().await;
+  let (tx, rx) = oneshot::channel();
+  sender.send((Action::DeleteCapturer(id), tx)).await.unwrap();
+  Ok(rx.await.unwrap())
+}

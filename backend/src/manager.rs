@@ -40,6 +40,10 @@ pub async fn manager_thread(mut rx: ActionReceiver) {
         );
         warp::reply::json(&"ok").into_response()
       }
+      Action::DeleteCapturer(id) => {
+        capturer_map.remove(&id);
+        warp::reply::json(&"ok").into_response()
+      }
     };
     tx.send(result).unwrap();
   }

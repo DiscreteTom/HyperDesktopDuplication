@@ -5,6 +5,8 @@ use crate::{
 use std::convert::Infallible;
 use warp::Filter;
 
+use super::handler::handle_delete_capturer;
+
 pub fn with_mutex(
   mutex: ServerMutex,
 ) -> impl Filter<Extract = (ServerMutex,), Error = Infallible> + Clone {
@@ -54,11 +56,24 @@ pub fn create_capturer(
     .and_then(handle_create_capturer)
 }
 
+/// DELETE /captures/:id
+pub fn delete_capturer(
+  mutex: ServerMutex,
+  sender: ActionSender,
+) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+  warp::path!("captures" / u32)
+    .and(warp::delete())
+    .and(with_mutex(mutex))
+    .and(with_sender(sender))
+    .and_then(handle_delete_capturer)
+}
+
 pub fn all_routes(
   mutex: ServerMutex,
   sender: ActionSender,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
   get_display(mutex.clone(), sender.clone())
     .or(create_capturer(mutex.clone(), sender.clone()))
+    .or(delete_capturer(mutex.clone(), sender.clone()))
     .or(list_displays(mutex, sender.clone()))
 }
