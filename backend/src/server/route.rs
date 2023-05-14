@@ -43,7 +43,7 @@ pub fn get_display(
 }
 
 /// PUT /captures/:id/:name
-pub fn create_capturer<'a>(
+pub fn create_capturer(
   mutex: ServerMutex,
   sender: ActionSender,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
@@ -54,7 +54,7 @@ pub fn create_capturer<'a>(
     .and_then(handle_create_capturer)
 }
 
-pub fn all_routes<'a>(
+pub fn all_routes(
   mutex: ServerMutex,
   sender: ActionSender,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
