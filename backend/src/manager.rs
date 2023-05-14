@@ -5,6 +5,7 @@ use rusty_duplication::{
   utils::FrameInfoExt,
 };
 use std::collections::HashMap;
+use urlencoding::decode;
 use warp::Reply;
 
 pub async fn manager_thread(mut rx: ActionReceiver) {
@@ -33,6 +34,7 @@ pub async fn manager_thread(mut rx: ActionReceiver) {
       )
       .into_response(),
       Action::CreateCapturer(id, name) => {
+        let name = decode(&name).unwrap();
         capturer_map.insert(
           id,
           manager
