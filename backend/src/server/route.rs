@@ -42,12 +42,12 @@ pub fn get_display(
     .and_then(handle_get_display)
 }
 
-/// PUT /displays/:id/:name
+/// PUT /captures/:id/:name
 pub fn create_capturer<'a>(
   mutex: ServerMutex,
   sender: ActionSender,
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
-  warp::path!("displays" / u32 / String)
+  warp::path!("captures" / u32 / String)
     .and(warp::put())
     .and(with_mutex(mutex))
     .and(with_sender(sender))
