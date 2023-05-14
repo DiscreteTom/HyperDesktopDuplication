@@ -1,6 +1,13 @@
 use serde_derive::Serialize;
 use windows::Win32::Graphics::Dxgi::DXGI_OUTPUT_DESC;
 
+#[derive(Debug)]
+pub enum Action {
+  ListDisplays,
+  GetDisplay(u32),
+  CreateCapturer(u32, String),
+}
+
 #[derive(Serialize, Clone, Debug)]
 pub struct DisplaysInfo {
   pub displays: Vec<DisplayInfo>,

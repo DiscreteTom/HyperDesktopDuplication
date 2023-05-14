@@ -1,17 +1,20 @@
-mod handler;
 mod manager;
 mod model;
-mod route;
+mod server;
 
-use crate::route::all_routes;
+use crate::{manager::manager_thread, server::server_thread};
+use std::sync::Arc;
+use tokio::sync::{mpsc, Mutex};
 
 #[tokio::main]
 async fn main() {
-  let manager = manager::init_manager();
+  let mutex = Arc::new(Mutex::new(()));
+  let (tx, rx) = mpsc::channel(1);
 
-  println!("running on localhost:3030");
+  tokio::spawn(async move {
+    println!("running on localhost:3030");
+    server_thread(mutex, tx).await;
+  });
 
-  warp::serve(all_routes(manager))
-    .run(([127, 0, 0, 1], 3030))
-    .await;
+  manager_thread(rx).await;
 }
