@@ -35,6 +35,8 @@ pub async fn manager_thread(mut rx: ActionReceiver) {
       .into_response(),
       Action::CreateCapturer(id, name) => {
         let name = decode(&name).unwrap();
+        println!("CreateCapturer: id: {}, name: {}", id, name);
+
         capturer_map.insert(
           id,
           manager
