@@ -23,7 +23,7 @@ pub async fn handle_get_display(
   Ok(rx.await.unwrap())
 }
 
-pub async fn handle_create_capturer(
+pub async fn handle_create_capture(
   id: u32,
   name: String,
   mutex: ServerMutex,
@@ -38,7 +38,7 @@ pub async fn handle_create_capturer(
   Ok(rx.await.unwrap())
 }
 
-pub async fn handle_delete_capturer(
+pub async fn handle_delete_capture(
   id: u32,
   mutex: ServerMutex,
   sender: ActionSender,

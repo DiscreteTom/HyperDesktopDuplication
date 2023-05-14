@@ -5,7 +5,7 @@ use crate::{
 use std::convert::Infallible;
 use warp::Filter;
 
-use super::handler::handle_delete_capturer;
+use super::handler::{handle_delete_capture, handle_take_capturer};
 
 pub fn with_mutex(
   mutex: ServerMutex,
@@ -53,7 +53,7 @@ pub fn create_capture(
     .and(warp::put())
     .and(with_mutex(mutex))
     .and(with_sender(sender))
-    .and_then(handle_create_capturer)
+    .and_then(handle_create_capture)
 }
 
 /// DELETE /captures/:id
@@ -65,7 +65,9 @@ pub fn delete_capture(
     .and(warp::delete())
     .and(with_mutex(mutex))
     .and(with_sender(sender))
-    .and_then(handle_delete_capturer)
+    .and_then(handle_delete_capture)
+}
+
 }
 
 pub fn all_routes(
