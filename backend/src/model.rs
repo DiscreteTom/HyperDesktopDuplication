@@ -14,6 +14,7 @@ pub enum Action {
   GetDisplay(u32),
   CreateCapturer(u32, String),
   DeleteCapturer(u32),
+  GetCapturer(u32),
 }
 
 #[derive(Serialize, Clone, Debug)]

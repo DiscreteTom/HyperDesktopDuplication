@@ -1,5 +1,9 @@
 use crate::model::{Action, ActionReceiver, DisplaysInfo, DxgiOutputDescExt};
-use rusty_duplication::{capturer::shared::SharedCapturer, manager::Manager};
+use rusty_duplication::{
+  capturer::{model::Capturer, shared::SharedCapturer},
+  manager::Manager,
+  utils::FrameInfoExt,
+};
 use std::collections::HashMap;
 use warp::Reply;
 
@@ -43,6 +47,19 @@ pub async fn manager_thread(mut rx: ActionReceiver) {
       Action::DeleteCapturer(id) => {
         capturer_map.remove(&id);
         warp::reply::json(&"ok").into_response()
+      }
+      Action::GetCapturer(id) => {
+        if capturer_map
+          .get_mut(&id)
+          .unwrap()
+          .capture()
+          .unwrap()
+          .is_new_frame()
+        {
+          warp::reply::json(&"new").into_response()
+        } else {
+          warp::reply::json(&"old").into_response()
+        }
       }
     };
     tx.send(result).unwrap();
