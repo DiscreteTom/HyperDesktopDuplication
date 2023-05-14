@@ -3,12 +3,13 @@ mod model;
 mod server;
 
 use crate::{manager::manager_thread, server::server_thread};
+use model::ServerMutex;
 use std::sync::Arc;
 use tokio::sync::{mpsc, Mutex};
 
 #[tokio::main]
 async fn main() {
-  let mutex = Arc::new(Mutex::new(()));
+  let mutex: ServerMutex = Arc::new(Mutex::new(()));
   let (tx, rx) = mpsc::channel(1);
 
   tokio::spawn(async move {

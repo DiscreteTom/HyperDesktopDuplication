@@ -1,13 +1,9 @@
-use crate::model::{Action, DisplaysInfo, DxgiOutputDescExt};
+use crate::model::{Action, ActionReceiver, DisplaysInfo, DxgiOutputDescExt};
 use rusty_duplication::{capturer::shared::SharedCapturer, manager::Manager};
 use std::collections::HashMap;
-use tokio::sync::{mpsc, oneshot};
-use warp::{
-  hyper::{Body, Response},
-  Reply,
-};
+use warp::Reply;
 
-pub async fn manager_thread(mut rx: mpsc::Receiver<(Action, oneshot::Sender<Response<Body>>)>) {
+pub async fn manager_thread(mut rx: ActionReceiver) {
   let manager = Manager::default().unwrap();
   let mut capturer_map: HashMap<u32, SharedCapturer> = HashMap::new();
 

@@ -1,13 +1,10 @@
-use std::{convert::Infallible, sync::Arc};
-
-use tokio::sync::{mpsc, oneshot, Mutex};
-use warp::hyper::{Body, Response};
-
-use crate::model::Action;
+use crate::model::{Action, ActionSender, ServerMutex};
+use std::convert::Infallible;
+use tokio::sync::oneshot;
 
 pub async fn handle_list_displays(
-  mutex: Arc<Mutex<()>>,
-  sender: mpsc::Sender<(Action, oneshot::Sender<Response<Body>>)>,
+  mutex: ServerMutex,
+  sender: ActionSender,
 ) -> Result<impl warp::Reply, Infallible> {
   let _ = mutex.lock().await;
   let (tx, rx) = oneshot::channel();
@@ -17,8 +14,8 @@ pub async fn handle_list_displays(
 
 pub async fn handle_get_display(
   id: u32,
-  mutex: Arc<Mutex<()>>,
-  sender: mpsc::Sender<(Action, oneshot::Sender<Response<Body>>)>,
+  mutex: ServerMutex,
+  sender: ActionSender,
 ) -> Result<impl warp::Reply, Infallible> {
   let _ = mutex.lock().await;
   let (tx, rx) = oneshot::channel();
@@ -29,8 +26,8 @@ pub async fn handle_get_display(
 pub async fn handle_create_capturer(
   id: u32,
   name: String,
-  mutex: Arc<Mutex<()>>,
-  sender: mpsc::Sender<(Action, oneshot::Sender<Response<Body>>)>,
+  mutex: ServerMutex,
+  sender: ActionSender,
 ) -> Result<impl warp::Reply, Infallible> {
   let _ = mutex.lock().await;
   let (tx, rx) = oneshot::channel();

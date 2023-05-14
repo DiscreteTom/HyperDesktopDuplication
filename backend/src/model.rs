@@ -1,5 +1,12 @@
 use serde_derive::Serialize;
+use std::sync::Arc;
+use tokio::sync::{mpsc, oneshot};
+use warp::hyper::{Body, Response};
 use windows::Win32::Graphics::Dxgi::DXGI_OUTPUT_DESC;
+
+pub type ServerMutex = Arc<tokio::sync::Mutex<()>>;
+pub type ActionSender = mpsc::Sender<(Action, oneshot::Sender<Response<Body>>)>;
+pub type ActionReceiver = mpsc::Receiver<(Action, oneshot::Sender<Response<Body>>)>;
 
 #[derive(Debug)]
 pub enum Action {
