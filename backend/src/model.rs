@@ -21,9 +21,9 @@ pub enum HddRequest {
 pub enum HddReply {
   ListDisplays(Vec<DisplayInfo>),
   GetDisplay(DisplayInfo),
-  CreateCapture(bool),
-  DeleteCapture(bool),
-  TakeCapture(bool, bool),
+  CreateCapture,
+  DeleteCapture,
+  TakeCapture(bool),
 }
 
 pub trait DxgiOutputDescExt {

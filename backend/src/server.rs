@@ -73,8 +73,8 @@ impl Hdd for TheHdd {
       .send((HddRequest::CreateCapture(request.id, request.name), tx))
       .await
       .unwrap();
-    if let HddReply::CreateCapture(ok) = rx.await.unwrap() {
-      Ok(Response::new(CreateCaptureReply { ok }))
+    if let HddReply::CreateCapture = rx.await.unwrap() {
+      Ok(Response::new(CreateCaptureReply {}))
     } else {
       Err(Status::internal("invalid reply"))
     }
@@ -92,8 +92,8 @@ impl Hdd for TheHdd {
       .send((HddRequest::DeleteCapture(request.id), tx))
       .await
       .unwrap();
-    if let HddReply::DeleteCapture(ok) = rx.await.unwrap() {
-      Ok(Response::new(DeleteCaptureReply { ok }))
+    if let HddReply::DeleteCapture = rx.await.unwrap() {
+      Ok(Response::new(DeleteCaptureReply {}))
     } else {
       Err(Status::internal("invalid reply"))
     }
@@ -111,8 +111,8 @@ impl Hdd for TheHdd {
       .send((HddRequest::TakeCapture(request.id), tx))
       .await
       .unwrap();
-    if let HddReply::TakeCapture(ok, update) = rx.await.unwrap() {
-      Ok(Response::new(TakeCaptureReply { ok, update }))
+    if let HddReply::TakeCapture(update) = rx.await.unwrap() {
+      Ok(Response::new(TakeCaptureReply { update }))
     } else {
       Err(Status::internal("invalid reply"))
     }

@@ -41,12 +41,12 @@ pub async fn manager_thread(mut rx: ReplyReceiver) {
             .shared_capturer(&name)
             .unwrap(),
         );
-        HddReply::CreateCapture(true)
+        HddReply::CreateCapture
       }
       HddRequest::DeleteCapture(id) => {
         capturer_map.remove(&id);
         println!("DeleteCapturer: id: {}", id);
-        HddReply::DeleteCapture(true)
+        HddReply::DeleteCapture
       }
       HddRequest::TakeCapture(id) => {
         if capturer_map
@@ -56,9 +56,9 @@ pub async fn manager_thread(mut rx: ReplyReceiver) {
           .unwrap()
           .desktop_updated()
         {
-          HddReply::TakeCapture(true, true)
+          HddReply::TakeCapture(true)
         } else {
-          HddReply::TakeCapture(true, false)
+          HddReply::TakeCapture(false)
         }
       }
     };

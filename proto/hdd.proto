@@ -27,22 +27,19 @@ message CreateCaptureRequest {
   string name = 2;
 }
 message CreateCaptureReply {
-  bool ok = 1;
 }
 
 message DeleteCaptureRequest {
   uint32 id = 1;
 }
 message DeleteCaptureReply {
-  bool ok = 1;
 }
 
 message TakeCaptureRequest {
   uint32 id = 1;
 }
 message TakeCaptureReply {
-  bool ok = 1;
-  bool update = 2;
+  bool update = 1;
 }
 
 message DisplayInfo {
