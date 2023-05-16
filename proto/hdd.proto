@@ -1,0 +1,55 @@
+syntax = "proto3";
+package hdd;
+
+service HDD {
+  rpc ListDisplays (ListDisplaysRequest) returns (ListDisplaysReply);
+  rpc GetDisplay(GetDisplayRequest) returns (GetDisplayReply);
+  rpc CreateCapture(CreateCaptureRequest) returns (CreateCaptureReply);
+  rpc DeleteCapture(DeleteCaptureRequest) returns (DeleteCaptureReply);
+  rpc TakeCapture(TakeCaptureRequest) returns (TakeCaptureReply);
+}
+
+message ListDisplaysRequest {
+}
+message ListDisplaysReply {
+  repeated DisplayInfo infos = 1;
+}
+
+message GetDisplayRequest {
+  uint32 id = 1;
+}
+message GetDisplayReply {
+  DisplayInfo info = 1;
+}
+
+message CreateCaptureRequest {
+  uint32 id = 1;
+  string name = 2;
+}
+message CreateCaptureReply {
+  bool ok = 1;
+}
+
+message DeleteCaptureRequest {
+  uint32 id = 1;
+}
+message DeleteCaptureReply {
+  bool ok = 1;
+}
+
+message TakeCaptureRequest {
+  uint32 id = 1;
+}
+message TakeCaptureReply {
+  bool ok = 1;
+  bool update = 2;
+}
+
+message DisplayInfo {
+  int32 bottom = 1;
+  int32 top = 2;
+  int32 left = 3;
+  int32 right = 4;
+  string name = 5;
+  int32 rotation = 6;
+}

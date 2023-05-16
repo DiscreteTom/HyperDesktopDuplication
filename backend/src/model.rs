@@ -1,35 +1,29 @@
-use serde_derive::Serialize;
 use std::sync::Arc;
-use tokio::sync::{mpsc, oneshot};
-use warp::hyper::{Body, Response};
+use tokio::sync::{mpsc, oneshot, Mutex};
 use windows::Win32::Graphics::Dxgi::DXGI_OUTPUT_DESC;
 
-pub type ServerMutex = Arc<tokio::sync::Mutex<()>>;
-pub type ActionSender = mpsc::Sender<(Action, oneshot::Sender<Response<Body>>)>;
-pub type ActionReceiver = mpsc::Receiver<(Action, oneshot::Sender<Response<Body>>)>;
+pub type ServerMutex = Arc<Mutex<()>>;
+pub type RequestSender = mpsc::Sender<(HddRequest, oneshot::Sender<HddReply>)>;
+pub type ReplyReceiver = mpsc::Receiver<(HddRequest, oneshot::Sender<HddReply>)>;
+
+tonic::include_proto!("hdd");
 
 #[derive(Debug)]
-pub enum Action {
+pub enum HddRequest {
   ListDisplays,
   GetDisplay(u32),
-  CreateCapturer(u32, String),
-  DeleteCapturer(u32),
-  GetCapturer(u32),
+  CreateCapture(u32, String),
+  DeleteCapture(u32),
+  TakeCapture(u32),
 }
 
-#[derive(Serialize, Clone, Debug)]
-pub struct DisplaysInfo {
-  pub displays: Vec<DisplayInfo>,
-}
-
-#[derive(Serialize, Clone, Debug)]
-pub struct DisplayInfo {
-  pub bottom: i32,
-  pub top: i32,
-  pub left: i32,
-  pub right: i32,
-  pub name: String,
-  pub rotation: i32,
+#[derive(Debug)]
+pub enum HddReply {
+  ListDisplays(Vec<DisplayInfo>),
+  GetDisplay(DisplayInfo),
+  CreateCapture(bool),
+  DeleteCapture(bool),
+  TakeCapture(bool, bool),
 }
 
 pub trait DxgiOutputDescExt {
