@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class App : MonoBehaviour
 {
@@ -33,12 +30,36 @@ public class App : MonoBehaviour
   int bufSize;
   Texture2D texture;
   string filename;
+  Grpc.Core.Channel channel;
+  Hdd.HDD.HDDClient client;
 
   void Start()
   {
-    filename = "HDD" + UnityEngine.Random.Range(10000, 99999).ToString();
+    channel = new Grpc.Core.Channel("localhost:3030", Grpc.Core.ChannelCredentials.Insecure);
+    client = new Hdd.HDD.HDDClient(channel);
+    filename = "Global\\HDD" + UnityEngine.Random.Range(10000, 99999).ToString();
     state = State.ListDisplays;
-    StartCoroutine(ListDisplays());
+    ListDisplays();
+  }
+
+  async void ListDisplays()
+  {
+    var reply = await client.ListDisplaysAsync(new Hdd.ListDisplaysRequest { });
+    state = State.ListDisplaysDone;
+    // for (var i = 0; i < reply.Infos.Count; ++i)
+    // {
+    var i = 0;
+    var info = reply.Infos[i];
+    var width = info.Right - info.Left;
+    var height = info.Bottom - info.Top;
+    print($"display {i}: {width}x{height}");
+
+    this.bufSize = width * height * 4;
+    texture = new Texture2D(width, height, TextureFormat.BGRA32, false);
+    GetComponent<Renderer>().material.mainTexture = texture;
+    print("texture created with size: " + width + "x" + height);
+    this.transform.localScale = new Vector3(-width / 1000.0f, 1, height / 1000.0f);
+    // }
   }
 
   void Update()
@@ -46,14 +67,14 @@ public class App : MonoBehaviour
     if (state == State.ListDisplaysDone)
     {
       state = State.CreateCapture;
-      StartCoroutine(CreateCapture(0));
+      CreateCapture(0);
     }
     else if (state == State.CreateCaptureDone)
     {
       this.handle = OpenFileMapping(
         ((0x000F0000) | 0x0001 | 0x0002 | 0x0004 | 0x0008 | 0x0010), // FILE_MAP_ALL_ACCESS
         false,
-        "Global\\" + filename
+        filename
       );
       if (handle == IntPtr.Zero)
       {
@@ -72,7 +93,7 @@ public class App : MonoBehaviour
       }
 
       state = State.TakeCapture;
-      StartCoroutine(TakeCapture(0));
+      TakeCapture(0);
     }
     else if (state == State.TakeCaptureDone)
     {
@@ -80,11 +101,11 @@ public class App : MonoBehaviour
       texture.Apply();
 
       state = State.TakeCapture;
-      StartCoroutine(TakeCapture(0));
+      TakeCapture(0);
     }
   }
 
-  void OnDestroy()
+  async void OnDestroy()
   {
     if (address != IntPtr.Zero && !UnmapViewOfFile(address))
     {
@@ -96,82 +117,46 @@ public class App : MonoBehaviour
       Debug.Log("CloseHandle() failed");
       Debug.Log(Marshal.GetLastWin32Error());
     }
-    UnityWebRequest www = UnityWebRequest.Delete("http://localhost:3030/captures/0");
-    www.SendWebRequest();
+    try
+    {
+      await client.DeleteCaptureAsync(new Hdd.DeleteCaptureRequest { Id = 0 });
+    }
+    catch
+    {
+      print("capture not deleted");
+    }
+    try
+    {
+      await channel.ShutdownAsync();
+    }
+    catch
+    {
+      print("channel not shutdown");
+    }
     print("capture deleted");
   }
 
-  IEnumerator ListDisplays()
+
+  async void CreateCapture(uint n)
   {
-    UnityWebRequest www = UnityWebRequest.Get("http://localhost:3030/displays");
-    yield return www.SendWebRequest();
-
-    if (www.result != UnityWebRequest.Result.Success)
-    {
-      Debug.Log(www.error);
-    }
-    else
-    {
-      // Show results as text
-      print(www.downloadHandler.text);
-      var info = JsonUtility.FromJson<DisplaysInfo>(www.downloadHandler.text);
-      int width = info.displays[0].right - info.displays[0].left;
-      int height = info.displays[0].bottom - info.displays[0].top;
-      this.bufSize = width * height * 4;
-      texture = new Texture2D(width, height, TextureFormat.BGRA32, false);
-      GetComponent<Renderer>().material.mainTexture = texture;
-      print("texture created with size: " + width + "x" + height);
-      this.transform.localScale = new Vector3(-width / 1000.0f, 1, height / 1000.0f);
-    }
-
-    state = State.ListDisplaysDone;
-  }
-
-  IEnumerator CreateCapture(int n)
-  {
-    UnityWebRequest www = UnityWebRequest.Put("http://localhost:3030/captures/0/Global%5C" + filename, "");
-    yield return www.SendWebRequest();
-
-    if (www.result != UnityWebRequest.Result.Success)
-    {
-      Debug.Log(www.error);
-    }
-    else
-    {
-      // Show results as text
-      print(www.downloadHandler.text);
-    }
-
+    await client.CreateCaptureAsync(new Hdd.CreateCaptureRequest { Id = n, Name = filename });
     state = State.CreateCaptureDone;
   }
 
-  IEnumerator TakeCapture(int n)
+  async void TakeCapture(uint n)
   {
-    UnityWebRequest www = UnityWebRequest.Post("http://localhost:3030/captures/0", "");
-    yield return www.SendWebRequest();
+    var res = await client.TakeCaptureAsync(new Hdd.TakeCaptureRequest { Id = n });
 
-    if (www.result != UnityWebRequest.Result.Success)
+    if (res.Update)
     {
-      Debug.Log(www.error);
+
+      state = State.TakeCaptureDone;
     }
     else
     {
-      // Show results as text
-      // print(www.downloadHandler.text);
-      if (www.downloadHandler.text == "\"old\"")
-      {
-        print("old");
-        state = State.TakeCapture;
-        StartCoroutine(TakeCapture(0));
-      }
-      else if (www.downloadHandler.text == "\"new\"")
-      {
-        state = State.TakeCaptureDone;
-      }
-      else
-      {
-        Debug.Log("unknown response: " + www.downloadHandler.text);
-      }
+      print("old");
+      state = State.TakeCapture;
+      TakeCapture(0);
     }
   }
 }
