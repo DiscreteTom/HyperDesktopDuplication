@@ -1,3 +1,4 @@
+use rusty_duplication::utils::Result;
 use std::sync::Arc;
 use tokio::sync::{mpsc, oneshot, Mutex};
 use windows::Win32::Graphics::Dxgi::DXGI_OUTPUT_DESC;
@@ -19,11 +20,11 @@ pub enum HddRequest {
 
 #[derive(Debug)]
 pub enum HddReply {
-  ListDisplays(Vec<DisplayInfo>),
-  GetDisplay(DisplayInfo),
-  CreateCapture,
-  DeleteCapture,
-  TakeCapture(bool),
+  ListDisplays(Result<Vec<DisplayInfo>>),
+  GetDisplay(Result<DisplayInfo>),
+  CreateCapture(Result<()>),
+  DeleteCapture(Result<()>),
+  TakeCapture(Result<bool>),
 }
 
 pub trait DxgiOutputDescExt {

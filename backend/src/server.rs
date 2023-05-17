@@ -30,15 +30,16 @@ impl Hdd for TheHdd {
   ) -> Result<Response<ListDisplaysReply>, Status> {
     let _ = self.mutex.lock().await;
     let (tx, rx) = oneshot::channel();
-    self
-      .sender
-      .send((HddRequest::ListDisplays, tx))
-      .await
-      .unwrap();
-    if let HddReply::ListDisplays(displays) = rx.await.unwrap() {
-      Ok(Response::new(ListDisplaysReply { infos: displays }))
-    } else {
-      Err(Status::internal("invalid reply"))
+    if let Err(err) = self.sender.send((HddRequest::ListDisplays, tx)).await {
+      return Err(Status::internal(err.to_string()));
+    }
+    match rx.await {
+      Err(_) => Err(Status::internal("failed to receive reply")),
+      Ok(HddReply::ListDisplays(Ok(displays))) => {
+        Ok(Response::new(ListDisplaysReply { infos: displays }))
+      }
+      Ok(HddReply::ListDisplays(Err(err))) => Err(Status::internal(err.to_string())),
+      Ok(_) => Err(Status::internal("invalid reply")),
     }
   }
 
@@ -49,15 +50,18 @@ impl Hdd for TheHdd {
     let _ = self.mutex.lock().await;
     let (tx, rx) = oneshot::channel();
     let request = request.into_inner();
-    self
+    if let Err(err) = self
       .sender
       .send((HddRequest::GetDisplay(request.id), tx))
       .await
-      .unwrap();
-    if let HddReply::GetDisplay(info) = rx.await.unwrap() {
-      Ok(Response::new(GetDisplayReply { info: Some(info) }))
-    } else {
-      Err(Status::internal("invalid reply"))
+    {
+      return Err(Status::internal(err.to_string()));
+    }
+    match rx.await {
+      Err(_) => Err(Status::internal("failed to receive reply")),
+      Ok(HddReply::GetDisplay(Ok(info))) => Ok(Response::new(GetDisplayReply { info: Some(info) })),
+      Ok(HddReply::GetDisplay(Err(err))) => Err(Status::internal(err.to_string())),
+      Ok(_) => Err(Status::internal("invalid reply")),
     }
   }
 
@@ -68,15 +72,18 @@ impl Hdd for TheHdd {
     let _ = self.mutex.lock().await;
     let (tx, rx) = oneshot::channel();
     let request = request.into_inner();
-    self
+    if let Err(err) = self
       .sender
       .send((HddRequest::CreateCapture(request.id, request.name), tx))
       .await
-      .unwrap();
-    if let HddReply::CreateCapture = rx.await.unwrap() {
-      Ok(Response::new(CreateCaptureReply {}))
-    } else {
-      Err(Status::internal("invalid reply"))
+    {
+      return Err(Status::internal(err.to_string()));
+    }
+    match rx.await {
+      Err(_) => Err(Status::internal("failed to receive reply")),
+      Ok(HddReply::CreateCapture(Ok(_))) => Ok(Response::new(CreateCaptureReply {})),
+      Ok(HddReply::CreateCapture(Err(err))) => Err(Status::internal(err.to_string())),
+      Ok(_) => Err(Status::internal("invalid reply")),
     }
   }
 
@@ -87,15 +94,18 @@ impl Hdd for TheHdd {
     let _ = self.mutex.lock().await;
     let (tx, rx) = oneshot::channel();
     let request = request.into_inner();
-    self
+    if let Err(err) = self
       .sender
       .send((HddRequest::DeleteCapture(request.id), tx))
       .await
-      .unwrap();
-    if let HddReply::DeleteCapture = rx.await.unwrap() {
-      Ok(Response::new(DeleteCaptureReply {}))
-    } else {
-      Err(Status::internal("invalid reply"))
+    {
+      return Err(Status::internal(err.to_string()));
+    }
+    match rx.await {
+      Err(_) => Err(Status::internal("failed to receive reply")),
+      Ok(HddReply::DeleteCapture(Ok(_))) => Ok(Response::new(DeleteCaptureReply {})),
+      Ok(HddReply::DeleteCapture(Err(err))) => Err(Status::internal(err.to_string())),
+      Ok(_) => Err(Status::internal("invalid reply")),
     }
   }
 
@@ -106,15 +116,18 @@ impl Hdd for TheHdd {
     let _ = self.mutex.lock().await;
     let (tx, rx) = oneshot::channel();
     let request = request.into_inner();
-    self
+    if let Err(err) = self
       .sender
       .send((HddRequest::TakeCapture(request.id), tx))
       .await
-      .unwrap();
-    if let HddReply::TakeCapture(update) = rx.await.unwrap() {
-      Ok(Response::new(TakeCaptureReply { update }))
-    } else {
-      Err(Status::internal("invalid reply"))
+    {
+      return Err(Status::internal(err.to_string()));
+    }
+    match rx.await {
+      Err(_) => Err(Status::internal("failed to receive reply")),
+      Ok(HddReply::TakeCapture(Ok(update))) => Ok(Response::new(TakeCaptureReply { update })),
+      Ok(HddReply::TakeCapture(Err(err))) => Err(Status::internal(err.to_string())),
+      Ok(_) => Err(Status::internal("invalid reply")),
     }
   }
 }
