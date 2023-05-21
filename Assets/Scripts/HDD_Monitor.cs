@@ -37,11 +37,13 @@ namespace HyperDesktopDuplication {
       this.id = id;
       this.filename = $"{filenamePrefix}-{id}";
 
+      var desktopRenderer = this.transform.Find("DesktopRenderer");
+
       this.bufSize = pixel_width * pixel_height * 4; // 4 for BGRA32
       texture = new Texture2D(pixel_width, pixel_height, TextureFormat.BGRA32, false);
-      GetComponent<Renderer>().material.mainTexture = texture;
+      desktopRenderer.GetComponent<Renderer>().material.mainTexture = texture;
       Logger.Log($"display {this.id}: texture created with size: {pixel_width}x{pixel_height}");
-      this.transform.localScale = new Vector3(-width / 1000.0f, 1, height / 1000.0f); // resize to a proper size
+      desktopRenderer.transform.localScale = new Vector3(-width / 1000.0f, 1, height / 1000.0f); // resize to a proper size
 
       this.CreateCapture();
     }
