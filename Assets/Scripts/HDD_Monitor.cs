@@ -32,6 +32,7 @@ namespace HyperDesktopDuplication {
     Texture2D texture;
     string filename; // name of shared memory
     Transform mouse;
+    Material mouseMaterial;
     int width;
     int height;
     int pixel_width;
@@ -48,6 +49,7 @@ namespace HyperDesktopDuplication {
 
       var desktopRenderer = this.transform.Find("DesktopRenderer");
       this.mouse = this.transform.Find("MouseRenderer");
+      this.mouseMaterial = this.mouse.GetComponent<Renderer>().material;
 
       this.bufSize = pixel_width * pixel_height * 4; // 4 for BGRA32
       texture = new Texture2D(pixel_width, pixel_height, TextureFormat.BGRA32, false);
@@ -104,9 +106,34 @@ namespace HyperDesktopDuplication {
           } else {
             mouse.gameObject.SetActive(false);
           }
+          // set z to -0.001 to make sure it's in front of the desktop
           // TODO: use width instead of pixel_width?
           // e.g. x = (-this.pixel_width / 2 + pos.X) * this.width / this.pixel_width
-          mouse.localPosition = new Vector3(-this.pixel_width / 2 + pos.X, this.pixel_height / 2 - pos.Y, -0.001f);
+          mouse.localPosition = new Vector3(-this.pixel_width / 2 + pos.X + this.mouse.transform.localScale.x / 2, this.pixel_height / 2 - pos.Y + this.mouse.transform.localScale.y / 2, -0.001f);
+        }
+
+        if (res.PointerShape != null) {
+          // update mouse shape
+          var shape = res.PointerShape;
+          switch (shape.ShapeType) {
+            case 1: {
+                // DXGI_OUTDUPL_POINTER_SHAPE_TYPE_MONOCHROME
+                break;
+              }
+            case 2: {
+                // DXGI_OUTDUPL_POINTER_SHAPE_TYPE_COLOR
+                var cursorTexture = new Texture2D((int)shape.Width, (int)shape.Height, TextureFormat.ARGB32, false);
+                cursorTexture.SetPixelData(shape.Data.ToByteArray(), 0);
+                cursorTexture.Apply();
+                this.mouseMaterial.mainTexture = cursorTexture;
+                this.mouse.transform.localScale = new Vector3(shape.Width, -shape.Height, 1);
+                break;
+              }
+            case 4: {
+                // DXGI_OUTDUPL_POINTER_SHAPE_TYPE_MASKED_COLOR
+                break;
+              }
+          }
         }
       } catch (Exception e) {
         Logger.Log($"display {this.id}: TakeCapture failed: {e}");
