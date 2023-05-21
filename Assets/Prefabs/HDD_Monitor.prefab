@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7887542944008162570}
   - component: {fileID: 7887542944008162575}
   m_Layer: 0
-  m_Name: Monitor
+  m_Name: HDD_Monitor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
