@@ -16,7 +16,7 @@ namespace HyperDesktopDuplication {
     void Awake() {
       this.channel = new Grpc.Core.Channel(server, Grpc.Core.ChannelCredentials.Insecure);
       this.client = new Shremdup.Shremdup.ShremdupClient(channel);
-      this.filenamePrefix = "Global\\HDD" + System.DateTime.Now.Ticks.ToString();
+      this.filenamePrefix = "Global\\HDD-" + System.DateTime.Now.Ticks.ToString();
       Logger.Log($"filenamePrefix: {this.filenamePrefix}");
     }
 
