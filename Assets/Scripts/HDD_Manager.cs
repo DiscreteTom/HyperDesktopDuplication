@@ -1,0 +1,53 @@
+using System.Threading.Tasks;
+using Google.Protobuf.Collections;
+using UnityEngine;
+
+namespace HyperDesktopDuplication {
+  public class HDD_Manager : MonoBehaviour {
+    public string server = "localhost:3030";
+    public GameObject monitorPrefab;
+    public RepeatedField<Shremdup.DisplayInfo> Monitors { get; private set; }
+    public bool ready { get; private set; } = false;
+
+    Grpc.Core.Channel channel;
+    Shremdup.Shremdup.ShremdupClient client;
+    string filenamePrefix;
+
+    void Awake() {
+      this.channel = new Grpc.Core.Channel(server, Grpc.Core.ChannelCredentials.Insecure);
+      this.client = new Shremdup.Shremdup.ShremdupClient(channel);
+      this.filenamePrefix = "Global\\HDD" + System.DateTime.Now.Ticks.ToString();
+      Logger.Log($"filenamePrefix: {this.filenamePrefix}");
+    }
+
+    public async Task Refresh() {
+      // list displays
+      var reply = await this.client.ListDisplaysAsync(new Shremdup.ListDisplaysRequest { });
+      for (var i = 0; i < reply.Infos.Count; ++i) {
+        var info = reply.Infos[i];
+        var width = info.Right - info.Left;
+        var height = info.Bottom - info.Top;
+        Logger.Log($"display {i}: {width}x{height}");
+      }
+      this.Monitors = reply.Infos;
+      this.ready = true;
+    }
+
+    public void CreateMonitor(int id) {
+      var info = this.Monitors[id];
+      var width = info.Right - info.Left;
+      var height = info.Bottom - info.Top;
+      var monitor = Instantiate(monitorPrefab);
+      monitor.GetComponent<HDD_Monitor>().Setup(this.client, id, width, height, (int)info.PixelWidth, (int)info.PixelHeight, this.filenamePrefix);
+    }
+
+    async void OnDestroy() {
+      try {
+        await channel.ShutdownAsync();
+        Logger.Log("channel shutdown");
+      } catch {
+        Logger.Log("channel not shutdown");
+      }
+    }
+  }
+}
