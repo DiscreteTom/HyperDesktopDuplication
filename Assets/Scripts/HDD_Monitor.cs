@@ -31,13 +31,23 @@ namespace HyperDesktopDuplication {
     int bufSize;
     Texture2D texture;
     string filename; // name of shared memory
+    Transform mouse;
+    int width;
+    int height;
+    int pixel_width;
+    int pixel_height;
 
     public void Setup(Shremdup.Shremdup.ShremdupClient client, int id, int width, int height, int pixel_width, int pixel_height, string filenamePrefix) {
       this.client = client;
       this.id = id;
       this.filename = $"{filenamePrefix}-{id}";
+      this.width = width;
+      this.height = height;
+      this.pixel_width = pixel_width;
+      this.pixel_height = pixel_height;
 
       var desktopRenderer = this.transform.Find("DesktopRenderer");
+      this.mouse = this.transform.Find("MouseRenderer");
 
       this.bufSize = pixel_width * pixel_height * 4; // 4 for BGRA32
       texture = new Texture2D(pixel_width, pixel_height, TextureFormat.BGRA32, false);
@@ -84,6 +94,14 @@ namespace HyperDesktopDuplication {
           // load from shared memory
           texture.LoadRawTextureData(address, bufSize);
           texture.Apply();
+        }
+
+        if (res.PointerPosition != null) {
+          // update mouse position
+          var pos = res.PointerPosition;
+          // TODO: use width instead of pixel_width?
+          // e.g. x = (-this.pixel_width / 2 + pos.X) * this.width / this.pixel_width
+          mouse.localPosition = new Vector3(-this.pixel_width / 2 + pos.X, this.pixel_height / 2 - pos.Y, -0.001f);
         }
       } catch (Exception e) {
         Logger.Log($"display {this.id}: TakeCapture failed: {e}");
