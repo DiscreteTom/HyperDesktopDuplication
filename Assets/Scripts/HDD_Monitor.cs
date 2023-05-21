@@ -118,6 +118,7 @@ namespace HyperDesktopDuplication {
           switch (shape.ShapeType) {
             case 1: {
                 // DXGI_OUTDUPL_POINTER_SHAPE_TYPE_MONOCHROME
+                // TODO
                 break;
               }
             case 2: {
@@ -131,6 +132,7 @@ namespace HyperDesktopDuplication {
               }
             case 4: {
                 // DXGI_OUTDUPL_POINTER_SHAPE_TYPE_MASKED_COLOR
+                // TODO
                 break;
               }
           }
