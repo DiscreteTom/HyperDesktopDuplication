@@ -43,7 +43,7 @@ namespace HyperDesktopDuplication {
       texture = new Texture2D(pixel_width, pixel_height, TextureFormat.BGRA32, false);
       desktopRenderer.GetComponent<Renderer>().material.mainTexture = texture;
       Logger.Log($"display {this.id}: texture created with size: {pixel_width}x{pixel_height}");
-      desktopRenderer.transform.localScale = new Vector3(-width, 1, height); // resize to a proper size
+      desktopRenderer.transform.localScale = new Vector3(width / 2, -height / 2, 1); // resize to a proper size
 
       this.CreateCapture();
     }
