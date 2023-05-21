@@ -99,6 +99,11 @@ namespace HyperDesktopDuplication {
         if (res.PointerPosition != null) {
           // update mouse position
           var pos = res.PointerPosition;
+          if (pos.Visible) {
+            mouse.gameObject.SetActive(true);
+          } else {
+            mouse.gameObject.SetActive(false);
+          }
           // TODO: use width instead of pixel_width?
           // e.g. x = (-this.pixel_width / 2 + pos.X) * this.width / this.pixel_width
           mouse.localPosition = new Vector3(-this.pixel_width / 2 + pos.X, this.pixel_height / 2 - pos.Y, -0.001f);
