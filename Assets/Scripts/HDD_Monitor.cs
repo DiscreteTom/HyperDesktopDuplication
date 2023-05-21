@@ -165,7 +165,7 @@ namespace HyperDesktopDuplication {
 
       // stop server capture
       try {
-        await client.DeleteCaptureAsync(new Shremdup.DeleteCaptureRequest { Id = 0 });
+        await client.DeleteCaptureAsync(new Shremdup.DeleteCaptureRequest { Id = (uint)this.id });
         Logger.Log($"display {this.id}: capture deleted");
       } catch (Exception e) {
         Logger.Log($"display {this.id}: delete capture failed: {e}");
