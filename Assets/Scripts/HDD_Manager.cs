@@ -33,7 +33,7 @@ namespace HyperDesktopDuplication {
       this.ready = true;
     }
 
-    public void CreateMonitor(int id) {
+    public GameObject CreateMonitor(int id) {
       var info = this.Monitors[id];
       var width = info.Right - info.Left;
       var height = info.Bottom - info.Top;
@@ -41,6 +41,7 @@ namespace HyperDesktopDuplication {
       monitor.transform.parent = this.transform;
       monitor.gameObject.name = $"Monitor {id}";
       monitor.GetComponent<HDD_Monitor>().Setup(this.client, id, width, height, (int)info.PixelWidth, (int)info.PixelHeight, this.filenamePrefix);
+      return monitor;
     }
 
     async void OnDestroy() {
