@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace HyperDesktopDuplication {
@@ -49,7 +50,7 @@ namespace HyperDesktopDuplication {
       if (this.state == State.TakeCaptureDone) this.TakeCapture();
     }
 
-    async void OnDestroy() {
+    public async Task DestroyMonitor() {
       // first, set to idle to prevent further updates
       this.state = State.Idle;
 
