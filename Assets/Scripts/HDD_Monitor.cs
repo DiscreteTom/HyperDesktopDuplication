@@ -129,7 +129,7 @@ namespace HyperDesktopDuplication {
                 cursorTexture.SetPixelData(shape.Data.ToByteArray(), 0);
                 cursorTexture.Apply();
                 this.mouseMaterial.mainTexture = cursorTexture;
-                this.mouse.transform.localScale = new Vector3(shape.Width, -shape.Height, 1);
+                this.mouse.transform.localScale = new Vector3(shape.Width, shape.Height, 1);
                 break;
               }
             case 4: {
