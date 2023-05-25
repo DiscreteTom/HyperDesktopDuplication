@@ -37,6 +37,7 @@ namespace HyperDesktopDuplication {
     int height;
     int pixel_width;
     int pixel_height;
+    DesktopRenderer desktopRenderer;
 
     public void Setup(Shremdup.Shremdup.ShremdupClient client, int id, int width, int height, int pixel_width, int pixel_height, string filenamePrefix) {
       this.client = client;
@@ -50,6 +51,7 @@ namespace HyperDesktopDuplication {
       var desktopRenderer = this.transform.Find("DesktopRenderer");
       this.mouse = this.transform.Find("MouseRenderer");
       this.mouseMaterial = this.mouse.GetComponent<Renderer>().material;
+      this.desktopRenderer = desktopRenderer.GetComponentInChildren<DesktopRenderer>();
 
       this.bufSize = pixel_width * pixel_height * 4; // 4 for BGRA32
       texture = new Texture2D(pixel_width, pixel_height, TextureFormat.BGRA32, false);
@@ -146,7 +148,7 @@ namespace HyperDesktopDuplication {
 
     void Update() {
       // call take capture in Update to control the request interval
-      if (this.state == State.TakeCaptureDone) this.TakeCapture();
+      if (this.state == State.TakeCaptureDone && this.desktopRenderer.visible) this.TakeCapture();
     }
 
     public async Task DestroyMonitor() {
