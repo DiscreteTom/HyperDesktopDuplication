@@ -47,16 +47,15 @@ namespace HyperDesktopDuplication {
       this.filename = $"{filenamePrefix}-{id}";
       this.info = info;
 
-      var desktopRenderer = this.transform.Find("DesktopRenderer");
       this.mouse = this.transform.Find("MouseRenderer");
       this.mouseMaterial = this.mouse.GetComponent<Renderer>().material;
-      this.desktopRenderer = desktopRenderer.GetComponentInChildren<DesktopRenderer>();
+      this.desktopRenderer = this.GetComponentInChildren<DesktopRenderer>();
 
       this.bufSize = this.pixelWidth * this.pixelHeight * 4; // 4 for BGRA32
-      texture = new Texture2D(this.pixelWidth, this.pixelHeight, TextureFormat.BGRA32, false);
-      desktopRenderer.GetComponent<Renderer>().material.mainTexture = texture;
+      this.texture = new Texture2D(this.pixelWidth, this.pixelHeight, TextureFormat.BGRA32, false);
+      this.desktopRenderer.GetComponent<Renderer>().material.mainTexture = this.texture;
       Logger.Log($"display {this.id}: texture created with size: {this.pixelWidth}x{this.pixelHeight}");
-      desktopRenderer.transform.localScale = new Vector3(this.width, this.height, 1); // resize to a proper size
+      this.desktopRenderer.transform.localScale = new Vector3(this.width, this.height, 1); // resize to a proper size
 
       this.CreateCapture();
     }
