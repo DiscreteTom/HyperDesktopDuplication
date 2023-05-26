@@ -39,8 +39,8 @@ namespace HyperDesktopDuplication {
     public int pixelWidth => (int)this.info.PixelWidth;
     public int pixelHeight => (int)this.info.PixelHeight;
     public int rotation => this.info.Rotation;
-    public int width => this.info.Right - this.info.Left;
-    public int height => this.info.Bottom - this.info.Top;
+    public int width => (this.rotation == 2 || this.rotation == 4) ? this.info.Bottom - this.info.Top : this.info.Right - this.info.Left;
+    public int height => (this.rotation == 2 || this.rotation == 4) ? this.info.Right - this.info.Left : this.info.Bottom - this.info.Top;
 
     public void Setup(Shremdup.Shremdup.ShremdupClient client, int id, Shremdup.DisplayInfo info, string filenamePrefix) {
       this.client = client;
@@ -57,6 +57,7 @@ namespace HyperDesktopDuplication {
       this.desktopRenderer.GetComponent<Renderer>().material.mainTexture = this.texture;
       Logger.Log($"display {this.id}: texture created with size: {this.pixelWidth}x{this.pixelHeight}");
       this.desktopRenderer.transform.localScale = new Vector3(this.width, this.height, 1); // resize to a proper size
+      this.desktopRenderer.transform.localRotation = Quaternion.Euler(0, 0, this.rotation * 90 - 90); // rotate to a proper angle
 
       this.CreateCapture();
     }
