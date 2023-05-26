@@ -33,31 +33,30 @@ namespace HyperDesktopDuplication {
     string filename; // name of shared memory
     Transform mouse;
     Material mouseMaterial;
-    int width;
-    int height;
-    int pixel_width;
-    int pixel_height;
+    Shremdup.DisplayInfo info;
     DesktopRenderer desktopRenderer;
 
-    public void Setup(Shremdup.Shremdup.ShremdupClient client, int id, int width, int height, int pixel_width, int pixel_height, string filenamePrefix) {
+    public int width => this.info.Right - this.info.Left;
+    public int height => this.info.Bottom - this.info.Top;
+    public int pixelWidth => (int)this.info.PixelWidth;
+    public int pixelHeight => (int)this.info.PixelHeight;
+
+    public void Setup(Shremdup.Shremdup.ShremdupClient client, int id, Shremdup.DisplayInfo info, string filenamePrefix) {
       this.client = client;
       this.id = id;
       this.filename = $"{filenamePrefix}-{id}";
-      this.width = width;
-      this.height = height;
-      this.pixel_width = pixel_width;
-      this.pixel_height = pixel_height;
+      this.info = info;
 
       var desktopRenderer = this.transform.Find("DesktopRenderer");
       this.mouse = this.transform.Find("MouseRenderer");
       this.mouseMaterial = this.mouse.GetComponent<Renderer>().material;
       this.desktopRenderer = desktopRenderer.GetComponentInChildren<DesktopRenderer>();
 
-      this.bufSize = pixel_width * pixel_height * 4; // 4 for BGRA32
-      texture = new Texture2D(pixel_width, pixel_height, TextureFormat.BGRA32, false);
+      this.bufSize = this.pixelWidth * this.pixelHeight * 4; // 4 for BGRA32
+      texture = new Texture2D(this.pixelWidth, this.pixelHeight, TextureFormat.BGRA32, false);
       desktopRenderer.GetComponent<Renderer>().material.mainTexture = texture;
-      Logger.Log($"display {this.id}: texture created with size: {pixel_width}x{pixel_height}");
-      desktopRenderer.transform.localScale = new Vector3(width, height, 1); // resize to a proper size
+      Logger.Log($"display {this.id}: texture created with size: {this.pixelWidth}x{this.pixelHeight}");
+      desktopRenderer.transform.localScale = new Vector3(this.width, this.height, 1); // resize to a proper size
 
       this.CreateCapture();
     }
@@ -111,7 +110,7 @@ namespace HyperDesktopDuplication {
           // set z to -0.001 to make sure it's in front of the desktop
           // TODO: use width instead of pixel_width?
           // e.g. x = (-this.pixel_width / 2 + pos.X) * this.width / this.pixel_width
-          mouse.localPosition = new Vector3(-this.pixel_width / 2 + pos.X + this.mouse.transform.localScale.x / 2, -this.pixel_height / 2 + pos.Y + this.mouse.transform.localScale.y / 2, -0.001f);
+          mouse.localPosition = new Vector3(-this.pixelWidth / 2 + pos.X + this.mouse.transform.localScale.x / 2, -this.pixelHeight / 2 + pos.Y + this.mouse.transform.localScale.y / 2, -0.001f);
         }
 
         if (res.PointerShape != null) {

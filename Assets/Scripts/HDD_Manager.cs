@@ -40,7 +40,7 @@ namespace HyperDesktopDuplication {
       var monitor = Instantiate(monitorPrefab);
       monitor.transform.parent = this.transform;
       monitor.gameObject.name = $"Monitor {id}";
-      monitor.GetComponent<HDD_Monitor>().Setup(this.client, id, width, height, (int)info.PixelWidth, (int)info.PixelHeight, this.filenamePrefix);
+      monitor.GetComponent<HDD_Monitor>().Setup(this.client, id, info, this.filenamePrefix);
       return monitor;
     }
 
