@@ -39,8 +39,10 @@ namespace HyperDesktopDuplication {
     public int pixelWidth => (int)this.info.PixelWidth;
     public int pixelHeight => (int)this.info.PixelHeight;
     public int rotation => this.info.Rotation;
-    public int width => (this.rotation == 2 || this.rotation == 4) ? this.info.Bottom - this.info.Top : this.info.Right - this.info.Left;
-    public int height => (this.rotation == 2 || this.rotation == 4) ? this.info.Right - this.info.Left : this.info.Bottom - this.info.Top;
+    public bool portrait => this.rotation == 2 || this.rotation == 4;
+    public bool landscape => this.rotation == 1 || this.rotation == 3;
+    public int width => this.portrait ? this.info.Bottom - this.info.Top : this.info.Right - this.info.Left;
+    public int height => this.portrait ? this.info.Right - this.info.Left : this.info.Bottom - this.info.Top;
 
     public void Setup(Shremdup.Shremdup.ShremdupClient client, int id, Shremdup.DisplayInfo info, string filenamePrefix) {
       this.client = client;
@@ -53,7 +55,7 @@ namespace HyperDesktopDuplication {
       this.desktopRenderer = this.GetComponentInChildren<DesktopRenderer>();
 
       this.bufSize = this.pixelWidth * this.pixelHeight * 4; // 4 for BGRA32
-      this.texture = new Texture2D(this.pixelWidth, this.pixelHeight, TextureFormat.BGRA32, false);
+      this.texture = new Texture2D(this.portrait ? this.pixelHeight : this.pixelWidth, this.portrait ? this.pixelWidth : this.pixelHeight, TextureFormat.BGRA32, false);
       this.desktopRenderer.GetComponent<Renderer>().material.mainTexture = this.texture;
       Logger.Log($"display {this.id}: texture created with size: {this.pixelWidth}x{this.pixelHeight}");
       this.desktopRenderer.transform.localScale = new Vector3(this.width, this.height, 1); // resize to a proper size
