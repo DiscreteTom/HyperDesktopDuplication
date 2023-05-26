@@ -36,10 +36,11 @@ namespace HyperDesktopDuplication {
     Shremdup.DisplayInfo info;
     DesktopRenderer desktopRenderer;
 
-    public int width => this.info.Right - this.info.Left;
-    public int height => this.info.Bottom - this.info.Top;
     public int pixelWidth => (int)this.info.PixelWidth;
     public int pixelHeight => (int)this.info.PixelHeight;
+    public int rotation => this.info.Rotation;
+    public int width => this.info.Right - this.info.Left;
+    public int height => this.info.Bottom - this.info.Top;
 
     public void Setup(Shremdup.Shremdup.ShremdupClient client, int id, Shremdup.DisplayInfo info, string filenamePrefix) {
       this.client = client;
