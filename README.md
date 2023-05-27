@@ -8,7 +8,7 @@ This project is based on [uDesktopDuplication](https://github.com/hecomi/uDeskto
 
 ## Usage
 
-First, start a [shremdup](https://github.com/DiscreteTom/shremdup) server with administrator privilege (to use shared memory across processes).
+First, start a [shremdup](https://github.com/DiscreteTom/shremdup) (v0.1.3+) server with administrator privilege (to use shared memory across processes).
 
 Then, copy all assets in this project into your Unity project.
 

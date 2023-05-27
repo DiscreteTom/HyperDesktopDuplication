@@ -36,23 +36,23 @@ namespace Shremdup {
             "b3BfdXBkYXRlZBgBIAEoCBI4ChBwb2ludGVyX3Bvc2l0aW9uGAIgASgLMhku",
             "c2hyZW1kdXAuUG9pbnRlclBvc2l0aW9uSACIAQESMgoNcG9pbnRlcl9zaGFw",
             "ZRgDIAEoCzIWLnNocmVtZHVwLlBvaW50ZXJTaGFwZUgBiAEBQhMKEV9wb2lu",
-            "dGVyX3Bvc2l0aW9uQhAKDl9wb2ludGVyX3NoYXBlIpIBCgtEaXNwbGF5SW5m",
+            "dGVyX3Bvc2l0aW9uQhAKDl9wb2ludGVyX3NoYXBlIqYBCgtEaXNwbGF5SW5m",
             "bxIOCgZib3R0b20YASABKAUSCwoDdG9wGAIgASgFEgwKBGxlZnQYAyABKAUS",
             "DQoFcmlnaHQYBCABKAUSDAoEbmFtZRgFIAEoCRIQCghyb3RhdGlvbhgGIAEo",
-            "BRITCgtwaXhlbF93aWR0aBgHIAEoDRIUCgxwaXhlbF9oZWlnaHQYCCABKA0i",
-            "OAoPUG9pbnRlclBvc2l0aW9uEg8KB3Zpc2libGUYASABKAgSCQoBeBgCIAEo",
-            "BRIJCgF5GAMgASgFIl4KDFBvaW50ZXJTaGFwZRISCgpzaGFwZV90eXBlGAEg",
-            "ASgNEg0KBXdpZHRoGAIgASgNEg4KBmhlaWdodBgDIAEoDRINCgVwaXRjaBgE",
-            "IAEoDRIMCgRkYXRhGAUgASgMMoMDCghTaHJlbWR1cBJKCgxMaXN0RGlzcGxh",
-            "eXMSHS5zaHJlbWR1cC5MaXN0RGlzcGxheXNSZXF1ZXN0Ghsuc2hyZW1kdXAu",
-            "TGlzdERpc3BsYXlzUmVwbHkSRAoKR2V0RGlzcGxheRIbLnNocmVtZHVwLkdl",
-            "dERpc3BsYXlSZXF1ZXN0Ghkuc2hyZW1kdXAuR2V0RGlzcGxheVJlcGx5Ek0K",
-            "DUNyZWF0ZUNhcHR1cmUSHi5zaHJlbWR1cC5DcmVhdGVDYXB0dXJlUmVxdWVz",
-            "dBocLnNocmVtZHVwLkNyZWF0ZUNhcHR1cmVSZXBseRJNCg1EZWxldGVDYXB0",
-            "dXJlEh4uc2hyZW1kdXAuRGVsZXRlQ2FwdHVyZVJlcXVlc3QaHC5zaHJlbWR1",
-            "cC5EZWxldGVDYXB0dXJlUmVwbHkSRwoLVGFrZUNhcHR1cmUSHC5zaHJlbWR1",
-            "cC5UYWtlQ2FwdHVyZVJlcXVlc3QaGi5zaHJlbWR1cC5UYWtlQ2FwdHVyZVJl",
-            "cGx5YgZwcm90bzM="));
+            "BRITCgtwaXhlbF93aWR0aBgHIAEoDRIUCgxwaXhlbF9oZWlnaHQYCCABKA0S",
+            "EgoKaXNfcHJpbWFyeRgJIAEoCCI4Cg9Qb2ludGVyUG9zaXRpb24SDwoHdmlz",
+            "aWJsZRgBIAEoCBIJCgF4GAIgASgFEgkKAXkYAyABKAUiXgoMUG9pbnRlclNo",
+            "YXBlEhIKCnNoYXBlX3R5cGUYASABKA0SDQoFd2lkdGgYAiABKA0SDgoGaGVp",
+            "Z2h0GAMgASgNEg0KBXBpdGNoGAQgASgNEgwKBGRhdGEYBSABKAwygwMKCFNo",
+            "cmVtZHVwEkoKDExpc3REaXNwbGF5cxIdLnNocmVtZHVwLkxpc3REaXNwbGF5",
+            "c1JlcXVlc3QaGy5zaHJlbWR1cC5MaXN0RGlzcGxheXNSZXBseRJECgpHZXRE",
+            "aXNwbGF5Ehsuc2hyZW1kdXAuR2V0RGlzcGxheVJlcXVlc3QaGS5zaHJlbWR1",
+            "cC5HZXREaXNwbGF5UmVwbHkSTQoNQ3JlYXRlQ2FwdHVyZRIeLnNocmVtZHVw",
+            "LkNyZWF0ZUNhcHR1cmVSZXF1ZXN0Ghwuc2hyZW1kdXAuQ3JlYXRlQ2FwdHVy",
+            "ZVJlcGx5Ek0KDURlbGV0ZUNhcHR1cmUSHi5zaHJlbWR1cC5EZWxldGVDYXB0",
+            "dXJlUmVxdWVzdBocLnNocmVtZHVwLkRlbGV0ZUNhcHR1cmVSZXBseRJHCgtU",
+            "YWtlQ2FwdHVyZRIcLnNocmVtZHVwLlRha2VDYXB0dXJlUmVxdWVzdBoaLnNo",
+            "cmVtZHVwLlRha2VDYXB0dXJlUmVwbHliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -66,7 +66,7 @@ namespace Shremdup {
             new pbr::GeneratedClrTypeInfo(typeof(global::Shremdup.DeleteCaptureReply), global::Shremdup.DeleteCaptureReply.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Shremdup.TakeCaptureRequest), global::Shremdup.TakeCaptureRequest.Parser, new[]{ "Id" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Shremdup.TakeCaptureReply), global::Shremdup.TakeCaptureReply.Parser, new[]{ "DesktopUpdated", "PointerPosition", "PointerShape" }, new[]{ "PointerPosition", "PointerShape" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Shremdup.DisplayInfo), global::Shremdup.DisplayInfo.Parser, new[]{ "Bottom", "Top", "Left", "Right", "Name", "Rotation", "PixelWidth", "PixelHeight" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Shremdup.DisplayInfo), global::Shremdup.DisplayInfo.Parser, new[]{ "Bottom", "Top", "Left", "Right", "Name", "Rotation", "PixelWidth", "PixelHeight", "IsPrimary" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Shremdup.PointerPosition), global::Shremdup.PointerPosition.Parser, new[]{ "Visible", "X", "Y" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Shremdup.PointerShape), global::Shremdup.PointerShape.Parser, new[]{ "ShapeType", "Width", "Height", "Pitch", "Data" }, null, null, null, null)
           }));
@@ -853,6 +853,10 @@ namespace Shremdup {
     /// <summary>Field number for the "name" field.</summary>
     public const int NameFieldNumber = 2;
     private string name_ = "";
+    /// <summary>
+    /// the name of the shared memory
+    /// starts with 'Global\' if you want to share it between processes
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public string Name {
@@ -865,6 +869,10 @@ namespace Shremdup {
     /// <summary>Field number for the "open" field.</summary>
     public const int OpenFieldNumber = 3;
     private bool open_;
+    /// <summary>
+    /// if true, the capture will open the shared memory by name
+    /// if false, the capture will create the shared memory by name
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public bool Open {
@@ -2060,6 +2068,7 @@ namespace Shremdup {
       rotation_ = other.rotation_;
       pixelWidth_ = other.pixelWidth_;
       pixelHeight_ = other.pixelHeight_;
+      isPrimary_ = other.isPrimary_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2132,6 +2141,9 @@ namespace Shremdup {
     /// <summary>Field number for the "rotation" field.</summary>
     public const int RotationFieldNumber = 6;
     private int rotation_;
+    /// <summary>
+    /// https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/bb173065(v=vs.85)
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int Rotation {
@@ -2165,6 +2177,18 @@ namespace Shremdup {
       }
     }
 
+    /// <summary>Field number for the "is_primary" field.</summary>
+    public const int IsPrimaryFieldNumber = 9;
+    private bool isPrimary_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsPrimary {
+      get { return isPrimary_; }
+      set {
+        isPrimary_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -2188,6 +2212,7 @@ namespace Shremdup {
       if (Rotation != other.Rotation) return false;
       if (PixelWidth != other.PixelWidth) return false;
       if (PixelHeight != other.PixelHeight) return false;
+      if (IsPrimary != other.IsPrimary) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2203,6 +2228,7 @@ namespace Shremdup {
       if (Rotation != 0) hash ^= Rotation.GetHashCode();
       if (PixelWidth != 0) hash ^= PixelWidth.GetHashCode();
       if (PixelHeight != 0) hash ^= PixelHeight.GetHashCode();
+      if (IsPrimary != false) hash ^= IsPrimary.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2253,6 +2279,10 @@ namespace Shremdup {
         output.WriteRawTag(64);
         output.WriteUInt32(PixelHeight);
       }
+      if (IsPrimary != false) {
+        output.WriteRawTag(72);
+        output.WriteBool(IsPrimary);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2295,6 +2325,10 @@ namespace Shremdup {
         output.WriteRawTag(64);
         output.WriteUInt32(PixelHeight);
       }
+      if (IsPrimary != false) {
+        output.WriteRawTag(72);
+        output.WriteBool(IsPrimary);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2328,6 +2362,9 @@ namespace Shremdup {
       }
       if (PixelHeight != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(PixelHeight);
+      }
+      if (IsPrimary != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2364,6 +2401,9 @@ namespace Shremdup {
       }
       if (other.PixelHeight != 0) {
         PixelHeight = other.PixelHeight;
+      }
+      if (other.IsPrimary != false) {
+        IsPrimary = other.IsPrimary;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2412,6 +2452,10 @@ namespace Shremdup {
             PixelHeight = input.ReadUInt32();
             break;
           }
+          case 72: {
+            IsPrimary = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -2457,6 +2501,10 @@ namespace Shremdup {
           }
           case 64: {
             PixelHeight = input.ReadUInt32();
+            break;
+          }
+          case 72: {
+            IsPrimary = input.ReadBool();
             break;
           }
         }
@@ -2780,6 +2828,9 @@ namespace Shremdup {
     /// <summary>Field number for the "shape_type" field.</summary>
     public const int ShapeTypeFieldNumber = 1;
     private uint shapeType_;
+    /// <summary>
+    /// https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_2/ne-dxgi1_2-dxgi_outdupl_pointer_shape_type
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public uint ShapeType {
