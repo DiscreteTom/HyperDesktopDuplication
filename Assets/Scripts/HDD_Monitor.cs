@@ -33,6 +33,8 @@ namespace HyperDesktopDuplication {
     Texture2D texture;
     string filename; // name of shared memory
     Transform mouse;
+    Vector2 mousePixelPosition;
+    Shremdup.PointerShape pointerShapeCache;
     Material mouseMaterial;
     Shremdup.DisplayInfo info;
     DesktopRenderer desktopRenderer;
@@ -50,6 +52,7 @@ namespace HyperDesktopDuplication {
       this.id = id;
       this.filename = $"{filenamePrefix}-{id}";
       this.info = info;
+      this.pointerShapeCache = new Shremdup.PointerShape();
 
       this.mouse = this.transform.Find("MouseRenderer");
       this.mouseMaterial = this.mouse.GetComponent<Renderer>().material;
@@ -109,15 +112,18 @@ namespace HyperDesktopDuplication {
           // TODO: use width instead of pixel_width?
           // e.g. x = (-this.pixel_width / 2 + pos.X) * this.width / this.pixel_width
           mouse.localPosition = new Vector3(-this.pixelWidth / 2 + pos.X + this.mouse.transform.localScale.x / 2, -this.pixelHeight / 2 + pos.Y + this.mouse.transform.localScale.y / 2, -0.001f);
+          this.mousePixelPosition = new Vector2(pos.X, pos.Y);
         }
 
         if (res.PointerShape != null) {
           // update mouse shape
           var shape = res.PointerShape;
+          this.pointerShapeCache = shape;
           switch (shape.ShapeType) {
             case 1: {
                 // DXGI_OUTDUPL_POINTER_SHAPE_TYPE_MONOCHROME
                 // TODO
+                print("mono");
                 break;
               }
             case 2: {
@@ -131,16 +137,42 @@ namespace HyperDesktopDuplication {
               }
             case 4: {
                 // DXGI_OUTDUPL_POINTER_SHAPE_TYPE_MASKED_COLOR
-                // TODO
+                // will update pointer shape with mask below
                 break;
               }
           }
+        }
+
+        if (this.pointerShapeCache.ShapeType == 4 && (res.DesktopUpdated || res.PointerPosition != null || res.PointerShape != null)) {
+          // DXGI_OUTDUPL_POINTER_SHAPE_TYPE_MASKED_COLOR
+          this.UpdatePointerShapeWithMask();
         }
       } catch (Exception e) {
         Logger.Log($"display {this.id}: TakeCapture failed: {e}");
       }
 
       this.state = State.TakeCaptureDone;
+    }
+
+    void UpdatePointerShapeWithMask() {
+      var shape = this.pointerShapeCache;
+      // TODO: don't create texture every time?
+      var cursorTexture = new Texture2D((int)shape.Width, (int)shape.Height, TextureFormat.ARGB32, false);
+      var raw = shape.Data.ToByteArray();
+      for (var i = 0; i < raw.Length; i += 4) {
+        var color = this.texture.GetPixel(i / (int)shape.Width, i % (int)shape.Width);
+        if (raw[i] == 0xFF) {
+          // XOR with the screen pixel
+          raw[i] = 255;
+          raw[i + 1] = (byte)(raw[i + 1] + (byte)(color.r * 255));
+          raw[i + 2] = (byte)(raw[i + 2] + (byte)(color.g * 255));
+          raw[i + 3] = (byte)(raw[i + 3] + (byte)(color.b * 255));
+        }
+      }
+      cursorTexture.SetPixelData(raw, 0);
+      cursorTexture.Apply();
+      this.mouseMaterial.mainTexture = cursorTexture;
+      this.mouse.transform.localScale = new Vector3(shape.Width, shape.Height, 1);
     }
 
     void Update() {
