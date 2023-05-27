@@ -15,6 +15,7 @@ namespace HyperDesktopDuplication {
     static extern bool UnmapViewOfFile(IntPtr pvBaseAddress);
     [DllImport("Kernel32.dll", CharSet = CharSet.Auto)]
     static extern bool CloseHandle(IntPtr handle);
+    const int FILE_MAP_ALL_ACCESS = ((0x000F0000) | 0x0001 | 0x0002 | 0x0004 | 0x0008 | 0x0010);
 
     enum State {
       Idle,
@@ -69,19 +70,13 @@ namespace HyperDesktopDuplication {
 
       await client.CreateCaptureAsync(new Shremdup.CreateCaptureRequest { Id = (uint)this.id, Name = filename, Open = false });
 
-      this.handle = OpenFileMapping(
-        ((0x000F0000) | 0x0001 | 0x0002 | 0x0004 | 0x0008 | 0x0010), // FILE_MAP_ALL_ACCESS
-        false,
-        filename
-      );
+      this.handle = OpenFileMapping(FILE_MAP_ALL_ACCESS, false, filename);
       if (handle == IntPtr.Zero) {
         Logger.Log($"display {this.id}: OpenFileMapping() failed: {Marshal.GetLastWin32Error()}");
         return;
       }
 
-      this.address = MapViewOfFile(handle,
-        ((0x000F0000) | 0x0001 | 0x0002 | 0x0004 | 0x0008 | 0x0010), // FILE_MAP_ALL_ACCESS
-        0, 0, this.bufSize);
+      this.address = MapViewOfFile(handle, FILE_MAP_ALL_ACCESS, 0, 0, this.bufSize);
       if (address == IntPtr.Zero) {
         Logger.Log($"display {this.id}: MapViewOfFile() failed");
         return;
