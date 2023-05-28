@@ -130,17 +130,17 @@ namespace HyperDesktopDuplication {
                 var textureBuffer = new byte[pixelCount * 4];
                 for (var i = 0; i < pixelCount; ++i) {
                   var bitMask = (byte)(0b10000000 >> (i % 8)); // 8 pixels per byte
-                  var andMask = (byte)(raw[i / 8] & bitMask); // 0 or 1
-                  var xorMask = (byte)(raw[i / 8 + shift] & bitMask); // 0 or 1
+                  var andMask = (byte)(raw[i / 8] & bitMask);
+                  var xorMask = (byte)(raw[i / 8 + shift] & bitMask);
 
                   // IMPORTANT: masks only affect RGB, not A
-                  if (andMask == 1 && xorMask == 1) {
+                  if (andMask != 0 && xorMask != 0) {
                     // if AND and XOR: (any AND 1) XOR 1 => invert any, this shouldn't happen
                     Logger.Log("AND and XOR: any xor 1 == invert, this shouldn't happen");
-                  } else if (andMask == 1 && xorMask == 0) {
+                  } else if (andMask != 0 && xorMask == 0) {
                     // if AND and not XOR: (any AND 1) XOR 0 => any, transparent
                     textureBuffer[i * 4] = 0; // just set alpha to 0
-                  } else if (andMask == 0 && xorMask == 1) {
+                  } else if (andMask == 0 && xorMask != 0) {
                     // if not AND and XOR: (any AND 0) XOR 1 => 1, all one, white
                     textureBuffer[i * 4] = 255;
                     textureBuffer[i * 4 + 1] = 255;
