@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace HyperDesktopDuplication {
-  public class App : MonoBehaviour {
+  public class Example : MonoBehaviour {
     const float scale = 100;
 
     async void Start() {
