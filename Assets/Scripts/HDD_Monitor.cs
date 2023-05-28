@@ -190,8 +190,9 @@ namespace HyperDesktopDuplication {
 
     void UpdatePointerShapeWithMask() {
       var shape = this.pointerShapeCache;
-      // TODO: don't create texture every time?
-      var cursorTexture = new Texture2D((int)shape.Width, (int)shape.Height, TextureFormat.ARGB32, false);
+      var cursorTexture = this.mouseMaterial.mainTexture as Texture2D; // check if we can reuse the existing texture
+      if (cursorTexture == null || cursorTexture.width != shape.Width || cursorTexture.height != shape.Height)
+        cursorTexture = new Texture2D((int)shape.Width, (int)shape.Height, TextureFormat.ARGB32, false);
       var raw = shape.Data.ToByteArray();
       for (var i = 0; i < raw.Length; i += 4) {
         // TODO: i / 4?
