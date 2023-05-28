@@ -122,8 +122,42 @@ namespace HyperDesktopDuplication {
           switch (shape.ShapeType) {
             case 1: {
                 // DXGI_OUTDUPL_POINTER_SHAPE_TYPE_MONOCHROME
-                // TODO
-                print("mono");
+                var raw = shape.Data.ToByteArray();
+                var cursorWidth = shape.Pitch * 8;
+                var cursorHeight = raw.Length / 2 / shape.Pitch;
+                var shift = raw.Length / 2; // use the second half of the raw buffer
+                var pixelCount = (int)cursorWidth * (int)cursorHeight;
+                var textureBuffer = new byte[pixelCount * 4];
+                var cursorTexture = new Texture2D((int)cursorWidth, (int)cursorHeight, TextureFormat.ARGB32, false);
+                for (var i = 0; i < pixelCount; ++i) {
+                  var bitMask = (byte)(0b10000000 >> (i % 8)); // 8 pixels per byte
+                  var andMask = (byte)(raw[i / 8] & bitMask); // 0 or 1
+                  var xorMask = (byte)(raw[i / 8 + shift] & bitMask); // 0 or 1
+
+                  if (andMask == 1 && xorMask == 1) {
+                    // if AND and XOR: (any AND 1) XOR 1 => invert any, this shouldn't happen
+                    Logger.Log("AND and XOR: any xor 1 == invert, this shouldn't happen");
+                  } else if (andMask == 1 && xorMask == 0) {
+                    // if AND and not XOR: (any AND 1) XOR 0 => any, transparent
+                    textureBuffer[i * 4] = 0; // just set alpha to 0
+                  } else if (andMask == 0 && xorMask == 1) {
+                    // if not AND and XOR: (any AND 0) XOR 1 => 1, all one, white
+                    textureBuffer[i * 4] = 255;
+                    textureBuffer[i * 4 + 1] = 255;
+                    textureBuffer[i * 4 + 2] = 255;
+                    textureBuffer[i * 4 + 3] = 255;
+                  } else {
+                    // if not AND and not XOR: (any AND 0) XOR 0 == 0, all zero, black?
+                    textureBuffer[i * 4] = 255; // TODO: 0?
+                    textureBuffer[i * 4 + 1] = 0;
+                    textureBuffer[i * 4 + 2] = 0;
+                    textureBuffer[i * 4 + 3] = 0;
+                  }
+                }
+                cursorTexture.SetPixelData(textureBuffer, 0);
+                cursorTexture.Apply();
+                this.mouseMaterial.mainTexture = cursorTexture;
+                this.mouse.transform.localScale = new Vector3(shape.Width, shape.Height, 1);
                 break;
               }
             case 2: {
@@ -160,6 +194,7 @@ namespace HyperDesktopDuplication {
       var cursorTexture = new Texture2D((int)shape.Width, (int)shape.Height, TextureFormat.ARGB32, false);
       var raw = shape.Data.ToByteArray();
       for (var i = 0; i < raw.Length; i += 4) {
+        // TODO: i / 4?
         var color = this.texture.GetPixel(i / (int)shape.Width, i % (int)shape.Width);
         if (raw[i] == 0xFF) {
           // XOR with the screen pixel
