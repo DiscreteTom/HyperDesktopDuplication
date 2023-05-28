@@ -27,7 +27,7 @@ namespace HyperDesktopDuplication {
         var info = reply.Infos[i];
         var width = info.Right - info.Left;
         var height = info.Bottom - info.Top;
-        Logger.Log($"display {i}: {width}x{height}");
+        Logger.Log($"display {i}: {width}x{height}, name={info.Name}, primary={info.IsPrimary}");
       }
       this.Monitors = reply.Infos;
       this.ready = true;
