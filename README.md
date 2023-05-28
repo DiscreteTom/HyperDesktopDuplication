@@ -12,6 +12,8 @@ First, start a [shremdup](https://github.com/DiscreteTom/shremdup) (v0.1.3+) ser
 
 Then, copy all assets in this project into your Unity project.
 
+Then, enable `` Allow `unsafe Code `` in the Player Settings.
+
 Finally, add the `HDD_Manager` prefab to your scene, and write a driver script. You can find the example in [`App.cs`](https://github.com/DiscreteTom/HyperDesktopDuplication/blob/main/Assets/Scripts/App.cs).
 
 ## Adopted Optimizations
