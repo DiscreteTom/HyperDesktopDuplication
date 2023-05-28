@@ -174,6 +174,10 @@ namespace HyperDesktopDuplication {
                 // will update pointer shape with mask below
                 break;
               }
+            default: {
+                Logger.Log($"display {this.id}: unknown pointer shape type {shape.ShapeType}");
+                break;
+              }
           }
         }
 
