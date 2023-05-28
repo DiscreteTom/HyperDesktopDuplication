@@ -199,14 +199,23 @@ namespace HyperDesktopDuplication {
         cursorTexture = new Texture2D((int)shape.Width, (int)shape.Height, TextureFormat.ARGB32, false);
       var raw = shape.Data.ToByteArray();
       for (var i = 0; i < raw.Length; i += 4) {
-        // TODO: i / 4?
-        var color = this.texture.GetPixel(i / (int)shape.Width, i % (int)shape.Width);
+        var cursorPixelIndex = i / 4;
+        var desktopX = (cursorPixelIndex % (int)shape.Width) + this.mousePixelPosition.Item1;
+        var desktopY = (cursorPixelIndex / (int)shape.Width) + this.mousePixelPosition.Item2;
+        var desktopPixelOffset = desktopX + (long)desktopY * this.pixelWidth;
+        var desktopPixelAddress = ((long)this.address) + desktopPixelOffset * 4;
+        byte r, g, b;
+        unsafe {
+          r = *(byte*)(desktopPixelAddress + 2);
+          g = *(byte*)(desktopPixelAddress + 1);
+          b = *(byte*)(desktopPixelAddress);
+        }
         if (raw[i] == 0xFF) {
           // XOR with the screen pixel
           raw[i] = 255;
-          raw[i + 1] = (byte)(raw[i + 1] + (byte)(color.r * 255));
-          raw[i + 2] = (byte)(raw[i + 2] + (byte)(color.g * 255));
-          raw[i + 3] = (byte)(raw[i + 3] + (byte)(color.b * 255));
+          raw[i + 1] = (byte)~(byte)(raw[i + 1] + r);
+          raw[i + 2] = (byte)~(byte)(raw[i + 2] + g);
+          raw[i + 3] = (byte)~(byte)(raw[i + 3] + b);
         }
         // else: transparent, just keep the the alpha channel `raw[i]` to 0
       }
