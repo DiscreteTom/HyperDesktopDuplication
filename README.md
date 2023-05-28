@@ -13,3 +13,8 @@ First, start a [shremdup](https://github.com/DiscreteTom/shremdup) (v0.1.3+) ser
 Then, copy all assets in this project into your Unity project.
 
 Finally, add the `HDD_Manager` prefab to your scene, and write a driver script. You can find the example in [`App.cs`](https://github.com/DiscreteTom/HyperDesktopDuplication/blob/main/Assets/Scripts/App.cs).
+
+## Adopted Optimizations
+
+- Invisible screen won't be updated.
+- Update desktop image and mouse cursor image separately to reduce texture update frequency.
