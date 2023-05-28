@@ -148,7 +148,7 @@ namespace HyperDesktopDuplication {
                     textureBuffer[i * 4 + 3] = 255;
                   } else if (andMask == 0 && xorMask == 0) {
                     // if not AND and not XOR: (any AND 0) XOR 0 == 0, all zero, black
-                    textureBuffer[i * 4] = 255;
+                    textureBuffer[i * 4] = 255; // A is not affected by masks
                     textureBuffer[i * 4 + 1] = 0;
                     textureBuffer[i * 4 + 2] = 0;
                     textureBuffer[i * 4 + 3] = 0;
