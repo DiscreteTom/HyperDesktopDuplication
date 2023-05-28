@@ -204,14 +204,16 @@ namespace HyperDesktopDuplication {
         var desktopY = (cursorPixelIndex / (int)shape.Width) + this.mousePixelPosition.Item2;
         var desktopPixelOffset = desktopX + (long)desktopY * this.pixelWidth;
         var desktopPixelAddress = ((long)this.address) + desktopPixelOffset * 4;
+        // desktop pixel
         byte r, g, b;
         unsafe {
-          r = *(byte*)(desktopPixelAddress + 2);
-          g = *(byte*)(desktopPixelAddress + 1);
+          // desktop pixel format is BGRA
           b = *(byte*)(desktopPixelAddress);
+          g = *(byte*)(desktopPixelAddress + 1);
+          r = *(byte*)(desktopPixelAddress + 2);
         }
         if (raw[i] == 0xFF) {
-          // XOR with the screen pixel
+          // XOR with the desktop pixel
           raw[i] = 255;
           raw[i + 1] ^= r;
           raw[i + 2] ^= g;
