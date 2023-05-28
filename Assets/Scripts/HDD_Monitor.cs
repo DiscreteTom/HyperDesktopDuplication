@@ -33,7 +33,7 @@ namespace HyperDesktopDuplication {
     Texture2D texture;
     string filename; // name of shared memory
     Transform mouse;
-    Vector2 mousePixelPosition;
+    (int, int) mousePixelPosition;
     Shremdup.PointerShape pointerShapeCache;
     Material mouseMaterial;
     Shremdup.DisplayInfo info;
@@ -112,7 +112,7 @@ namespace HyperDesktopDuplication {
           // TODO: use width instead of pixel_width?
           // e.g. x = (-this.pixel_width / 2 + pos.X) * this.width / this.pixel_width
           mouse.localPosition = new Vector3(-this.pixelWidth / 2 + pos.X + this.mouse.transform.localScale.x / 2, -this.pixelHeight / 2 + pos.Y + this.mouse.transform.localScale.y / 2, -0.001f);
-          this.mousePixelPosition = new Vector2(pos.X, pos.Y);
+          this.mousePixelPosition = (pos.X, pos.Y);
         }
 
         if (res.PointerShape != null) {
