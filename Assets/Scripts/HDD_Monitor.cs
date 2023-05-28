@@ -204,6 +204,7 @@ namespace HyperDesktopDuplication {
           raw[i + 2] = (byte)(raw[i + 2] + (byte)(color.g * 255));
           raw[i + 3] = (byte)(raw[i + 3] + (byte)(color.b * 255));
         }
+        // else: transparent, just keep the the alpha channel `raw[i]` to 0
       }
       cursorTexture.SetPixelData(raw, 0);
       cursorTexture.Apply();
