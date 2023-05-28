@@ -122,13 +122,12 @@ namespace HyperDesktopDuplication {
           switch (shape.ShapeType) {
             case 1: {
                 // DXGI_OUTDUPL_POINTER_SHAPE_TYPE_MONOCHROME
+                // IMPORTANT: cursor height = shape.Height / 2
+                var cursorTexture = new Texture2D((int)shape.Width, (int)shape.Height / 2, TextureFormat.ARGB32, false);
                 var raw = shape.Data.ToByteArray();
-                var cursorWidth = shape.Pitch * 8;
-                var cursorHeight = raw.Length / 2 / shape.Pitch;
                 var shift = raw.Length / 2; // use the second half of the raw buffer
-                var pixelCount = (int)cursorWidth * (int)cursorHeight;
+                var pixelCount = (int)shape.Width * (int)shape.Height / 2;
                 var textureBuffer = new byte[pixelCount * 4];
-                var cursorTexture = new Texture2D((int)cursorWidth, (int)cursorHeight, TextureFormat.ARGB32, false);
                 for (var i = 0; i < pixelCount; ++i) {
                   var bitMask = (byte)(0b10000000 >> (i % 8)); // 8 pixels per byte
                   var andMask = (byte)(raw[i / 8] & bitMask); // 0 or 1
@@ -148,7 +147,7 @@ namespace HyperDesktopDuplication {
                     textureBuffer[i * 4 + 3] = 255;
                   } else {
                     // if not AND and not XOR: (any AND 0) XOR 0 == 0, all zero, black?
-                    textureBuffer[i * 4] = 255; // TODO: 0?
+                    textureBuffer[i * 4] = 0; // TODO: 0?
                     textureBuffer[i * 4 + 1] = 0;
                     textureBuffer[i * 4 + 2] = 0;
                     textureBuffer[i * 4 + 3] = 0;
@@ -157,7 +156,7 @@ namespace HyperDesktopDuplication {
                 cursorTexture.SetPixelData(textureBuffer, 0);
                 cursorTexture.Apply();
                 this.mouseMaterial.mainTexture = cursorTexture;
-                this.mouse.transform.localScale = new Vector3(shape.Width, shape.Height, 1);
+                this.mouse.transform.localScale = new Vector3(shape.Width, shape.Height / 2, 1);
                 break;
               }
             case 2: {
