@@ -213,9 +213,9 @@ namespace HyperDesktopDuplication {
         if (raw[i] == 0xFF) {
           // XOR with the screen pixel
           raw[i] = 255;
-          raw[i + 1] = (byte)~(byte)(raw[i + 1] + r);
-          raw[i + 2] = (byte)~(byte)(raw[i + 2] + g);
-          raw[i + 3] = (byte)~(byte)(raw[i + 3] + b);
+          raw[i + 1] ^= r;
+          raw[i + 2] ^= g;
+          raw[i + 3] ^= b;
         }
         // else: transparent, just keep the the alpha channel `raw[i]` to 0
       }
