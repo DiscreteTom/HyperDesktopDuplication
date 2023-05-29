@@ -38,6 +38,7 @@ namespace HyperDesktopDuplication {
     Material mouseMaterial;
     Shremdup.DisplayInfo info;
     DesktopRenderer desktopRenderer;
+    bool destroyed;
 
     public int pixelWidth => (int)this.info.PixelWidth;
     public int pixelHeight => (int)this.info.PixelHeight;
@@ -53,6 +54,7 @@ namespace HyperDesktopDuplication {
       this.filename = $"{filenamePrefix}-{id}";
       this.info = info;
       this.pointerShapeCache = new Shremdup.PointerShape();
+      this.destroyed = false;
 
       this.mouse = this.transform.Find("MouseRenderer");
       this.mouseMaterial = this.mouse.GetComponent<Renderer>().material;
@@ -233,6 +235,9 @@ namespace HyperDesktopDuplication {
     }
 
     public async Task DestroyMonitor() {
+      if (this.destroyed) return;
+      this.destroyed = true;
+
       // first, set to idle to prevent further updates
       this.state = State.Idle;
 
@@ -253,6 +258,11 @@ namespace HyperDesktopDuplication {
       } catch (Exception e) {
         Logger.Log($"display {this.id}: delete capture failed: {e}");
       }
+    }
+
+    async void OnDestroy() {
+      if (!this.destroyed)
+        await this.DestroyMonitor();
     }
   }
 }
