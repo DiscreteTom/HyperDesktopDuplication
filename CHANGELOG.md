@@ -1,15 +1,12 @@
 # CHANGELOG
 
-## v0.1.2
+## v1.1.0
 
-- Feat: optimize `HDD_Monitor` destruction behaviour, call `Destroy(object)` will also destroy the monitor in the server.
 - Feat: add `HDD_Monitor.id`.
-- Optimize folder structure?
+- Feat: add `HDD_Manager.primaryIndex/primaryInfo`.
+- Feat: optimize `HDD_Monitor` destruction behaviour, call `Destroy(object)` will also destroy the monitor in the server.
+- Optimize folder structure.
 
-## v0.1.1
-
-Add `HDD_Manager.primaryIndex/primaryInfo`.
-
-## v0.1.0
+## v1.0.0
 
 The initial release.
