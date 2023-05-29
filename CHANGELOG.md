@@ -4,7 +4,7 @@
 
 - Feat: optimize `HDD_Monitor` destruction behaviour, call `Destroy(object)` will also destroy the monitor in the server.
 - Feat: add `HDD_Monitor.id`.
-
+- Optimize folder structure?
 
 ## v0.1.1
 
