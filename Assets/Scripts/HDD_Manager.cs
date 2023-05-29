@@ -60,5 +60,17 @@ namespace HyperDesktopDuplication {
         Logger.Log("channel not shutdown");
       }
     }
+
+    public int primaryIndex {
+      get {
+        for (var i = 0; i < this.Monitors.Count; ++i) {
+          if (this.Monitors[i].IsPrimary) {
+            return i;
+          }
+        }
+        return -1;
+      }
+    }
+    public Shremdup.DisplayInfo primaryInfo => this.primaryIndex >= 0 ? this.Monitors[this.primaryIndex] : null;
   }
 }
