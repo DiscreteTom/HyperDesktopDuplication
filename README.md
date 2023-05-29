@@ -53,6 +53,8 @@ public class Example : MonoBehaviour {
 
       // if you want to destroy a monitor, you can do this:
       // await obj.GetComponent<HDD_Monitor>().DestroyMonitor();
+      // or just:
+      // Destroy(obj);
     }
 
     // on destroy, HDD_Manager will destroy all monitors and close the gRPC channel
