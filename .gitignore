@@ -71,10 +71,10 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-Packages
+/Packages
 ProjectSettings
 Assets/Scenes*
 Assets/NuGet*
-Assets/packages*
+Assets/packages.*
 Assets/Scripts/Example*
 omnisharp.json

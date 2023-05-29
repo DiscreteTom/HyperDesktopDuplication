@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.1.1
+
+Fix: missing gRPC packages.
+
 ## v1.1.0
 
 - Feat: add `HDD_Monitor.id`.
