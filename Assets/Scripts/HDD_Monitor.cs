@@ -25,7 +25,6 @@ namespace HyperDesktopDuplication {
     }
 
     State state = State.Idle;
-    int id = 0;
     Shremdup.Shremdup.ShremdupClient client;
     IntPtr handle;
     IntPtr address;
@@ -40,6 +39,7 @@ namespace HyperDesktopDuplication {
     DesktopRenderer desktopRenderer;
     bool destroyed;
 
+    public int id { get; private set; } = 0;
     public int pixelWidth => (int)this.info.PixelWidth;
     public int pixelHeight => (int)this.info.PixelHeight;
     public int rotation => this.info.Rotation;

@@ -3,6 +3,7 @@
 ## v0.1.2
 
 - Optimize `HDD_Monitor` destruction behaviour, call `Destroy(object)` will also destroy the monitor in the server.
+- Expose `HDD_Monitor.id`.
 
 ## v0.1.1
 
