@@ -96,6 +96,10 @@ namespace HyperDesktopDuplication {
       try {
         var res = await client.TakeCaptureAsync(new Shremdup.TakeCaptureRequest { Id = (uint)this.id });
 
+        // don't access memory if this is destroyed
+        // to avoid crash
+        if (this.destroyed) return;
+
         if (res.DesktopUpdated) {
           // load from shared memory
           texture.LoadRawTextureData(address, bufSize);

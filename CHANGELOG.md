@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.2.1
+
+- Enhance stability.
+
 ## v1.2.0
 
 - Feat: `HDD_Manager.Refresh` will restart shremdup service.
