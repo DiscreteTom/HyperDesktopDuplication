@@ -13,7 +13,7 @@ This project is based on [uDesktopDuplication](https://github.com/hecomi/uDeskto
 
 ## Usage
 
-First, start a [shremdup](https://github.com/DiscreteTom/shremdup) (v0.1.6+) server with administrator privilege (to use shared memory across processes).
+First, start a [shremdup](https://github.com/DiscreteTom/shremdup) (v0.1.7+) server with administrator privilege (to use shared memory across processes).
 
 Then, enable `Allow 'unsafe' Code` in the Player Settings, and copy all `Assets` in this repo into your Unity project.
 
