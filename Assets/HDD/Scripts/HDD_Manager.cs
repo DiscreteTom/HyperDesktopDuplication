@@ -46,11 +46,7 @@ namespace HyperDesktopDuplication {
 
     async void OnDestroy() {
       // first, destroy all monitors
-      var monitors = GetComponentsInChildren<HDD_Monitor>();
-      for (var i = 0; i < monitors.Length; ++i) {
-        var monitor = monitors[i];
-        await monitor.DestroyMonitor();
-      }
+      await this.DestroyAllMonitors();
 
       // then close the channel
       try {
@@ -58,6 +54,15 @@ namespace HyperDesktopDuplication {
         Logger.Log("channel shutdown");
       } catch {
         Logger.Log("channel not shutdown");
+      }
+    }
+
+    async Task DestroyAllMonitors() {
+      var monitors = GetComponentsInChildren<HDD_Monitor>();
+      for (var i = 0; i < monitors.Length; ++i) {
+        var monitor = monitors[i];
+        await monitor.DestroyMonitor();
+        Destroy(monitor.gameObject);
       }
     }
 
