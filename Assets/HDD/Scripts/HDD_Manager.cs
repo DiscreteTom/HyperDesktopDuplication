@@ -68,7 +68,7 @@ namespace HyperDesktopDuplication {
         } catch (System.Exception e) {
           Logger.Log($"error destroying monitor {i}: {e}");
         }
-        if (monitor.gameObject != null) Destroy(monitor.gameObject);
+        if (monitor != null && monitor.gameObject != null) Destroy(monitor.gameObject);
       }
     }
 
