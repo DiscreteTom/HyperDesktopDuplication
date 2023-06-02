@@ -63,7 +63,11 @@ namespace HyperDesktopDuplication {
       var monitors = GetComponentsInChildren<HDD_Monitor>();
       for (var i = 0; i < monitors.Length; ++i) {
         var monitor = monitors[i];
-        await monitor.DestroyMonitor();
+        try {
+          await monitor.DestroyMonitor();
+        } catch (System.Exception e) {
+          Logger.Log($"error destroying monitor {i}: {e}");
+        }
         if (monitor.gameObject != null) Destroy(monitor.gameObject);
       }
     }
