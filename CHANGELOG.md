@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.2.0
+
+- Feat: `HDD_Manager.Refresh` will restart shremdup service.
+- Enhance stability.
+
 ## v1.1.1
 
 Fix: missing gRPC packages.
