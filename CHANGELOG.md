@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.2.2
+
+- Fix: use the sync version gRPC call to make sure `HDD_Monitor/HDD_Manager` are properly destroyed.
+
 ## v1.2.1
 
 - Enhance stability.
