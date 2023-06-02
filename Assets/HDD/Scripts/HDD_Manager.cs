@@ -21,6 +21,7 @@ namespace HyperDesktopDuplication {
     }
 
     public async Task Refresh() {
+      await this.DestroyAllMonitors();
       // list displays
       var reply = await this.client.ListDisplaysAsync(new Shremdup.ListDisplaysRequest { });
       for (var i = 0; i < reply.Infos.Count; ++i) {
