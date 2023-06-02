@@ -63,7 +63,7 @@ namespace HyperDesktopDuplication {
       for (var i = 0; i < monitors.Length; ++i) {
         var monitor = monitors[i];
         await monitor.DestroyMonitor();
-        Destroy(monitor.gameObject);
+        if (monitor.gameObject != null) Destroy(monitor.gameObject);
       }
     }
 
