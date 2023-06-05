@@ -3,6 +3,7 @@
 ## v1.3.0
 
 - Feat: add frame rate limit support. #6
+- Feat: init `HDD_Manager` in `Refresh` instead of `Awake`.
 
 ## v1.2.2
 

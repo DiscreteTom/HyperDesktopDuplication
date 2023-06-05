@@ -14,14 +14,18 @@ namespace HyperDesktopDuplication {
     Shremdup.Shremdup.ShremdupClient client;
     string filenamePrefix;
 
-    void Awake() {
-      this.channel = new Grpc.Core.Channel(server, Grpc.Core.ChannelCredentials.Insecure);
-      this.client = new Shremdup.Shremdup.ShremdupClient(channel);
-      this.filenamePrefix = "Global\\HDD-" + System.DateTime.Now.Ticks.ToString();
-      Logger.Log($"filenamePrefix: {this.filenamePrefix}");
+    void InitIfNotReady() {
+      if (!this.ready) {
+        this.ready = true;
+        this.channel = new Grpc.Core.Channel(server, Grpc.Core.ChannelCredentials.Insecure);
+        this.client = new Shremdup.Shremdup.ShremdupClient(channel);
+        this.filenamePrefix = "Global\\HDD-" + System.DateTime.Now.Ticks.ToString();
+        Logger.Log($"filenamePrefix: {this.filenamePrefix}");
+      }
     }
 
     public async Task Refresh() {
+      this.InitIfNotReady();
       this.DestroyAllMonitors();
       await this.client.RestartAsync(new Shremdup.RestartRequest { });
       // list displays
@@ -33,7 +37,6 @@ namespace HyperDesktopDuplication {
         Logger.Log($"display {i}: {width}x{height}, name={info.Name}, primary={info.IsPrimary}");
       }
       this.Monitors = reply.Infos;
-      this.ready = true;
     }
 
     public GameObject CreateMonitor(int id) {
