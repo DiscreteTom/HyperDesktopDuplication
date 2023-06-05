@@ -5,6 +5,7 @@
     "DXGI",
     "IDXGI",
     "OUTDUPL",
+    "Protobuf",
     "Shremdup",
     "Unmap"
   ]
