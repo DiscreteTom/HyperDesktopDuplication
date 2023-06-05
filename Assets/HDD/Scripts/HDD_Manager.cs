@@ -8,6 +8,7 @@ namespace HyperDesktopDuplication {
     public GameObject monitorPrefab;
     public RepeatedField<Shremdup.DisplayInfo> Monitors { get; private set; }
     public bool ready { get; private set; } = false;
+    public int frameRate = 120;
 
     Grpc.Core.Channel channel;
     Shremdup.Shremdup.ShremdupClient client;
@@ -39,11 +40,12 @@ namespace HyperDesktopDuplication {
       var info = this.Monitors[id];
       var width = info.Right - info.Left;
       var height = info.Bottom - info.Top;
-      var monitor = Instantiate(monitorPrefab);
-      monitor.transform.parent = this.transform;
-      monitor.gameObject.name = $"Monitor {id}";
-      monitor.GetComponent<HDD_Monitor>().Setup(this.client, id, info, this.filenamePrefix);
-      return monitor;
+      var obj = Instantiate(monitorPrefab);
+      obj.transform.parent = this.transform;
+      obj.gameObject.name = $"Monitor {id}";
+      var monitor = obj.GetComponent<HDD_Monitor>();
+      monitor.Setup(this.client, id, info, this.filenamePrefix, this.frameRate);
+      return obj;
     }
 
     void OnDestroy() {

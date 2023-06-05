@@ -24,6 +24,8 @@ namespace HyperDesktopDuplication {
       TakeCaptureDone,
     }
 
+    public int frameRate = 120;
+    float lastUpdateTime = 0;
     State state = State.Idle;
     Shremdup.Shremdup.ShremdupClient client;
     IntPtr handle;
@@ -48,13 +50,14 @@ namespace HyperDesktopDuplication {
     public int width => this.portrait ? this.info.Bottom - this.info.Top : this.info.Right - this.info.Left;
     public int height => this.portrait ? this.info.Right - this.info.Left : this.info.Bottom - this.info.Top;
 
-    public void Setup(Shremdup.Shremdup.ShremdupClient client, int id, Shremdup.DisplayInfo info, string filenamePrefix) {
+    public void Setup(Shremdup.Shremdup.ShremdupClient client, int id, Shremdup.DisplayInfo info, string filenamePrefix, int frameRate) {
       this.client = client;
       this.id = id;
       this.filename = $"{filenamePrefix}-{id}";
       this.info = info;
       this.pointerShapeCache = new Shremdup.PointerShape();
       this.destroyed = false;
+      this.frameRate = frameRate;
 
       this.mouse = this.transform.Find("MouseRenderer");
       this.mouseMaterial = this.mouse.GetComponent<Renderer>().material;
@@ -92,6 +95,7 @@ namespace HyperDesktopDuplication {
 
     async void TakeCapture() {
       this.state = State.TakeCapture;
+      this.lastUpdateTime = Time.time;
 
       try {
         var res = await client.TakeCaptureAsync(new Shremdup.TakeCaptureRequest { Id = (uint)this.id });
@@ -235,7 +239,7 @@ namespace HyperDesktopDuplication {
 
     void Update() {
       // call take capture in Update to control the request interval
-      if (this.state == State.TakeCaptureDone && this.desktopRenderer.visible) this.TakeCapture();
+      if (this.state == State.TakeCaptureDone && this.desktopRenderer.visible && Time.time - this.lastUpdateTime > 1f / this.frameRate) this.TakeCapture();
     }
 
     public void DestroyMonitor() {

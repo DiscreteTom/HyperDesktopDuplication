@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.3.0
+
+- Feat: add frame rate limit support. #6
+
 ## v1.2.2
 
 - Fix: use the sync version gRPC call to make sure `HDD_Monitor/HDD_Manager` are properly destroyed.
