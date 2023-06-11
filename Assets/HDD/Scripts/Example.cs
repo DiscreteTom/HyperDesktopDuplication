@@ -2,11 +2,16 @@ using UnityEngine;
 
 namespace HyperDesktopDuplication {
   public class Example : MonoBehaviour {
+    public int frameRate = 120;
     const float scale = 100;
 
     async void Start() {
+      // set the application's frame rate
+      Application.targetFrameRate = this.frameRate;
+
       // assume we have an HDD_Manager component on the same GameObject
       var manager = this.GetComponent<HDD_Manager>();
+      manager.frameRate = this.frameRate;
       // refresh monitor infos
       await manager.Refresh();
 
